@@ -1,0 +1,54 @@
+﻿<!--
+***********************************************************************************************
+Directory.Build.Assembly.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (c) 2017 Ollon, LLC. All rights reserved. 
+***********************************************************************************************
+-->
+<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <GeneratedRootNamespaceFile>$(IntermediateOutputPath)GeneratedRootNamespace$(GeneratedFileExtension)</GeneratedRootNamespaceFile>
+  </PropertyGroup>
+
+  <Target Name="GenerateRootNamespaceFile"
+        Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+        Outputs="$(GeneratedRootNamespaceFile)"
+        DependsOnTargets="PrepareForBuild"
+        Condition="'$(GenerateRootNamespaceq)' != ''">
+    <CreateItem Include="System.Windows.Markup.RootNamespaceAttribute"
+                AdditionalMetadata="_Parameter1=%(RootNamespace.Identity)"
+                Condition="'@(RootNamespace)' != ''">
+      <Output TaskParameter="Include" ItemName="RootNamespaceAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+      AssemblyAttributes="@(RootNamespaceAttribute)"
+      Language="$(Language)"
+      OutputFile="$(GeneratedRootNamespaceFile)"
+      >
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+
+
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>
+      GenerateRootNamespaceFile;
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
+  </PropertyGroup>
+
+</Project>

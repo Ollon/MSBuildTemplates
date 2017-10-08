@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Themes/Styles/ButtonBaseStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/ButtonStyle1Style.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/CloseButtonStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/ComboBoxEditableTextBoxStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/ComboBoxToggleButtonStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/DialogWindowStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/FocusVisualStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/FooterGridStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/InfoGridStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/InfoTextStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/KeyButtonsStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/LabelRunStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/OptionMarkFocusVisualStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/PasswordBoxBaseStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/RadioViewboxBaseStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/StyleMerger.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/TextBlockBaseStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/TextBoxBaseStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/ThemedComboBoxStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/TitleBlockStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/TitleTextStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/ToolbarButtonStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/ToolbarGridStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Styles/ValueRunStyle.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

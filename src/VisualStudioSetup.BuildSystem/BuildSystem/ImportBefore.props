@@ -1,0 +1,79 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ImportBeforePropsFileImported>true</ImportBeforePropsFileImported>
+
+    <SupportedOutputTypes>Exe;WinExe;Library</SupportedOutputTypes>
+
+    <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
+    
+    <CSharpDesignTimeTargetsPath>XXXX</CSharpDesignTimeTargetsPath>
+    <XamlPropertyRulesDirectory>$(MSBuildThisFileDirectory)Rules\</XamlPropertyRulesDirectory>
+
+    <DefineCommonItemSchemas>false</DefineCommonItemSchemas>
+    <DefineCommonCapabilities>false</DefineCommonCapabilities>
+    <DefineCommonReferenceSchemas>false</DefineCommonReferenceSchemas>
+
+    <DefineCommonManagedCapabilities>false</DefineCommonManagedCapabilities>
+    <DefineCommonManagedItemSchemas>false</DefineCommonManagedItemSchemas>
+    <DefineCommonManagedReferenceSchemas>false</DefineCommonManagedReferenceSchemas>
+
+    <ManagedXamlResourcesDirectory>$(MSBuildDirectory)Microsoft\VisualStudio\Managed\</ManagedXamlResourcesDirectory>
+  </PropertyGroup>
+
+
+  <!-- Project Capabilities -->
+  <ItemGroup>
+    <ProjectCapability Include="UseFileGlobs"/>
+
+    <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
+    <ProjectCapability Include="DependenciesTree" />
+    <ProjectCapability Include="LaunchProfiles" />
+    <ProjectCapability Include="NoGeneralDependentFileIcon"/>
+    <!--
+      List of capabilities below is adding back common capabilities defined in imported targets.
+      We disabled them with the property DefineCommonCapabilities=false to get rid of default
+      References capability, but everything else we want back.
+    -->
+    <ProjectCapability Include="
+                          OpenProjectFile;
+                          AssemblyReferences;
+                          COMReferences;
+                          ProjectReferences;
+                          PackageReferences;
+                          SharedProjectReferences;
+                          OutputGroups;
+                          AllTargetOutputGroups;
+                          VisualStudioWellKnownOutputGroups;
+                          SingleFileGenerators;
+                          DeclaredSourceItems;
+                          UserSourceItems;
+                          BuildWindowsDesktopTarget;
+                          SourceItemsFromImports" />
+
+    <ProjectCapability Include="LanguageService" />
+
+    <!-- Reference Manager capabilities -->
+    <ProjectCapability Include="ReferenceManagerAssemblies" />
+    <ProjectCapability Include="ReferenceManagerBrowse" />
+    <ProjectCapability Include="ReferenceManagerCOM" />
+    <ProjectCapability Include="ReferenceManagerProjects" />
+    <ProjectCapability Include="ReferenceManagerSharedProjects" />
+    <ProjectCapability Include="ReferenceManagerWinRT" />
+
+    <!-- Settings page capability -->
+    <!--<ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>-->
+  </ItemGroup>
+
+
+  <Import Project="$(MSBuildThisFileDirectory)AssemblyInfo.Defaults.props" Condition="'$(ImportAssemblyInfoDefaultsProps)'=='true'"/>
+
+  <Import Project="$(MSBuildThisFileDirectory)NuGet.Packaging.Defaults.props" Condition="'$(ImportNuGetPackagingDefaultsProps)'=='true'"/>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" Condition="'$(IsCPSProject)' == 'true'"/>
+
+</Project>

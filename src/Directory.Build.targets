@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+***********************************************************************************************
+Directory.Build.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (c) Ollon, LLC. All rights reserved. 
+***********************************************************************************************
+-->
+<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+
+  <!--                           -->
+  <!--   Assembly Search Paths   -->
+  <!--                           -->
+  <PropertyGroup>
+    <AssemblyFoldersSuffix>AssemblyFoldersEx</AssemblyFoldersSuffix>
+    <FrameworkRegistryBase>Software\Microsoft\.NETFramework</FrameworkRegistryBase>
+    <ProjectSystemExtensionDir>$(DevEnvDir)CommonExtensions\Microsoft\Project\</ProjectSystemExtensionDir>
+    <NuGetExtensionDir>$(DevEnvDir)CommonExtensions\Microsoft\NuGet\</NuGetExtensionDir>
+    <LanguageServicesDir>$(DevEnvDir)CommonExtensions\Microsoft\ManagedLanguages\VBCSharp\LanguageServices\</LanguageServicesDir>
+    <CommonAssembliesDir>$([System.IO.Path]::GetFullPath('$(DevEnvDir)..\..\VSSDK\VisualStudioIntegration\Common\Assemblies\v4.0\'))</CommonAssembliesDir>
+    <PrivateAssemblies>$(DevEnvDir)PrivateAssemblies\</PrivateAssemblies>
+    <PublicAssemblies>$(DevEnvDir)PublicAssemblies\</PublicAssemblies>
+    <AssemblySearchPaths>
+      $(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\;
+      $(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Roslyn\;
+      $(ProjectSystemExtensionDir);
+      $(NuGetExtensionDir);
+      $(LanguageServicesDir);
+      $(ReferencePath);
+      {CandidateAssemblyFiles};
+      {HintPathFromItem};
+      {TargetFrameworkDirectory};
+      {RawFileName};
+      {GAC};
+      {Registry:$(FrameworkRegistryBase),$(TargetFrameworkVersion),$(AssemblyFoldersSuffix)$(AssemblyFoldersExConditions)};
+      $(DevEnvDir);
+      $(PrivateAssemblies);
+      $(PublicAssemblies);
+      $(CommonAssembliesDir);
+    </AssemblySearchPaths>
+    <DesignTimeAssemblySearchPaths>$(AssemblySearchPaths)</DesignTimeAssemblySearchPaths>
+  </PropertyGroup>
+
+
+  <!--                           -->
+  <!--   Generate AssemblyInfo   -->
+  <!--                           -->
+
+  <PropertyGroup>
+    <GeneratedAssemblyInfoFile>$(IntermediateOutputPath)GeneratedAssemblyInfo_$(BuildVersion)$(GeneratedFileExtension)</GeneratedAssemblyInfoFile>
+    <InternalsVisibleToSuffix>, PublicKey=$(PublicKey)</InternalsVisibleToSuffix>
+    <GeneratedInternalsVisibleToFile>$(IntermediateOutputPath)GeneratedInternalsVisibleTo$(GeneratedFileExtension)</GeneratedInternalsVisibleToFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyTitleAttribute">
+      <_Parameter1>$(AssemblyName)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyCompanyAttribute">
+      <_Parameter1>$(Company)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyCopyrightAttribute">
+      <_Parameter1>$(Copyright)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyProductAttribute">
+      <_Parameter1>$(AssemblyName)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyDescriptionAttribute">
+      <_Parameter1>$(AssemblyName)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyVersionAttribute">
+      <_Parameter1>$(AssemblyVersion)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyFileVersionAttribute">
+      <_Parameter1>$(BuildVersion)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyInformationalVersionAttribute">
+      <_Parameter1>$(BuildVersion)</_Parameter1>
+    </AssemblyVersionAttribute>
+  </ItemGroup>
+
+
+  <!--                                 -->
+  <!--   Generate InternalsVisibleTo   -->
+  <!--                                 -->
+  
+  <Target Name="GenerateAssemblyInfoFile" Inputs="$(MSBuildThisFileFullPath)" Outputs="$(GeneratedAssemblyInfoFile)" DependsOnTargets="PrepareForBuild">
+
+    <WriteCodeFragment AssemblyAttributes="@(AssemblyVersionAttribute)" Language="$(Language)" OutputFile="$(GeneratedAssemblyInfoFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+    
+    
+  </Target>
+
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>
+      GenerateAssemblyInfoFile;
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <Target Name="GenerateInternalsVisibleToFile" Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)" Outputs="$(GeneratedInternalsVisibleToFile)" DependsOnTargets="PrepareForBuild" Condition="'@(InternalsVisibleTo)' != ''">
+    <ItemGroup>
+      <InternalsVisibleTo Include="$(InternalsVisibleTo)" />
+    </ItemGroup>
+
+
+    <CreateItem Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute" AdditionalMetadata="_Parameter1=%(InternalsVisibleTo.Identity)$(InternalsVisibleToSuffix)" Condition="'@(InternalsVisibleTo)' != ''">
+      <Output TaskParameter="Include" ItemName="InternalsVisibleToAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment AssemblyAttributes="@(InternalsVisibleToAttribute)" Language="$(Language)" OutputFile="$(GeneratedInternalsVisibleToFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>
+      GenerateInternalsVisibleToFile;
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
+  </PropertyGroup>
+
+
+
+  <!--           -->
+  <!--   VSSDK   -->
+  <!--           -->
+
+  <ItemDefinitionGroup Condition="'(CreateVsixContainer)' == 'true'">
+
+    <_VSIXAsset>
+      <Visible>false</Visible>
+    </_VSIXAsset>
+    
+  </ItemDefinitionGroup>
+  
+  
+  <Import Project="$(VsToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(ImportVSSDKTargets)' == 'true'" />
+  
+  <PropertyGroup Condition="'$(CreateVsixContainer)' == 'true'">
+    <GetVsixSourceItemsDependsOn>IncludeNuGetResolvedAssets;$(GetVsixSourceItemsDependsOn)</GetVsixSourceItemsDependsOn>
+  </PropertyGroup>
+
+  <Target Name="IncludeNuGetResolvedAssets" AfterTargets="ResolveReferences" Condition="'$(CreateVsixContainer)' == 'true'">
+    <ItemGroup>
+      <_ReferenceCopyLocalPathsWithPotentialInclusions Include="@(ReferenceCopyLocalPaths)" />
+      <VSIXCopyLocalReferenceSourceItem Include="@(_ReferenceCopyLocalPathsWithPotentialInclusions)" Condition="'%(_ReferenceCopyLocalPathsWithPotentialInclusions.Extension)' != '.pdb'">
+        <ForceIncludeInVsix>true</ForceIncludeInVsix>
+        <Private>true</Private>
+      </VSIXCopyLocalReferenceSourceItem>
+    </ItemGroup>
+  </Target>
+
+  
+
+  <Target Name="VSIXIdentifierProjectOutputGroup" Condition="'$(CreateVsixContainer)' == 'false'" />
+  <Target Name="VSIXNameProjectOutputGroup" Condition="'$(CreateVsixContainer)' == 'false'" />
+
+  <PropertyGroup Condition="'$(DeployExtension)' == 'true'">
+    <StartAction>Program</StartAction>
+    <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
+    <StartArguments>/rootsuffix Exp</StartArguments>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    
+    <VsixIdentity>2b0e00629d2d4cf1a0fd9c2405f35fa5</VsixIdentity>
+    <VsixVersion>$(AssemblyBuildVersion)</VsixVersion>
+    <VsixPublisher>$(Company)</VsixPublisher>
+    <VsixTags>VisualStudio VSIX</VsixTags>
+    <VsixDisplayName>$(SolutionName)</VsixDisplayName>
+    <VsixDescription>$(SolutionName) Extension for Microsoft© Visual Studio®</VsixDescription>
+
+    <LicenseFilePath>$(MSBuildProjectDirectory)\License.txt</LicenseFilePath>
+    <VsixManifestFilePath>$(MSBuildProjectDirectory)\source.extension.vsixmanifest</VsixManifestFilePath>
+    <BeforeFindSourceVsixManifestDependsOn>
+      CreateVsixAssetsFromProjectReferences;
+      WriteSourceExtensionVsixManifestFile;
+    </BeforeFindSourceVsixManifestDependsOn>
+  </PropertyGroup>
+  
+
+  <Target Name="CreateVsixAssetsFromProjectReferences" Condition="'@(ProjectReference)' != ''">
+    <CreateItem Condition="'%(ProjectReference.Asset)' != ''" Include="%(ProjectReference.Asset)" AdditionalMetadata="ProjectName=%(ProjectReference.Name);Id=%(ProjectReference.Name)">
+      <Output TaskParameter="Include" ItemName="_VSIXAsset" />
+    </CreateItem>
+  </Target>
+  
+  <Target Name="WriteSourceExtensionVsixManifestFile" Condition="'@(_VSIXAsset)' != ''">
+
+    <PropertyGroup>
+      <LicenseFileText>Copyright © $([System.DateTime]::Now.Year) $(Company). All Rights Reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</LicenseFileText>
+    </PropertyGroup>
+
+  <ItemGroup>
+    <_VSIXManifestFileLines Include="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;" />
+    <_VSIXManifestFileLines Include="&lt;PackageManifest Version=&quot;2.0.0&quot; xmlns=&quot;http://schemas.microsoft.com/developer/vsx-schema/2011&quot; xmlns:d=&quot;http://schemas.microsoft.com/developer/vsx-schema-design/2011&quot;&gt;" />
+    <_VSIXManifestFileLines Include="  &lt;Metadata&gt;" />
+    <_VSIXManifestFileLines Include="    &lt;Identity Id=&quot;$(VsixIdentity)&quot; Version=&quot;$(VsixVersion)&quot; Language=&quot;en-US&quot; Publisher=&quot;$(VsixPublisher)&quot; /&gt;" />
+    <_VSIXManifestFileLines Include="    &lt;DisplayName&gt;$(VsixDisplayName)&lt;/DisplayName&gt;" />
+    <_VSIXManifestFileLines Include="    &lt;Description&gt;$(VsixDescription)&lt;/Description&gt;" />
+    <_VSIXManifestFileLines Include="    &lt;License&gt;License.txt&lt;/License&gt;" />
+    <_VSIXManifestFileLines Include="    &lt;Tags&gt;$(VsixTags)&lt;/Tags&gt;" />
+    <_VSIXManifestFileLines Include="  &lt;/Metadata&gt;" />
+    <_VSIXManifestFileLines Include="  &lt;Installation&gt;" />
+    <_VSIXManifestFileLines Include="    &lt;InstallationTarget Id=&quot;Microsoft.VisualStudio.Community&quot; Version=&quot;[15.0]&quot; /&gt;" />
+    <_VSIXManifestFileLines Include="  &lt;/Installation&gt;" />
+    <_VSIXManifestFileLines Include="  &lt;Dependencies&gt;" />
+    <_VSIXManifestFileLines Include="    &lt;Dependency Id=&quot;Microsoft.Framework.NDP&quot; DisplayName=&quot;Microsoft .NET Framework&quot; d:Source=&quot;Manual&quot; Version=&quot;[4.6,)&quot; /&gt;" />
+    <_VSIXManifestFileLines Include="  &lt;/Dependencies&gt;" />
+    <_VSIXManifestFileLines Include="  &lt;Assets&gt;" />
+    <_VSIXManifestFileLines Condition="'%(_VSIXAsset.ProjectName)' == 'Analyzer'" Include="    &lt;Asset Id=&quot;Microsoft.VisualStudio.Analyzer&quot;        d:Source=&quot;Project&quot; d:ProjectName=&quot;%(_VSIXAsset.ProjectName)&quot; Path=&quot;|%(_VSIXAsset.ProjectName)|&quot; /&gt; " />
+    <_VSIXManifestFileLines Condition="'%(_VSIXAsset.ProjectName)' == 'Assembly'" Include="    &lt;Asset Id=&quot;Microsoft.VisualStudio.Assembly&quot;        d:Source=&quot;Project&quot; d:ProjectName=&quot;%(_VSIXAsset.ProjectName)&quot; Path=&quot;|%(_VSIXAsset.ProjectName)%3BAssemblyName|&quot;               AssemblyName=&quot;|%(_VSIXAsset.ProjectName)|&quot; /&gt; " />
+    <_VSIXManifestFileLines Condition="'%(_VSIXAsset.ProjectName)' == 'ItemTemplate'" Include="    &lt;Asset Id=&quot;Microsoft.VisualStudio.ItemTemplate&quot;    d:Source=&quot;Project&quot; d:ProjectName=&quot;%(_VSIXAsset.ProjectName)&quot; Path=&quot;ItemTemplates&quot;                                            TargetPath=&quot;|%(_VSIXAsset.ProjectName)%3BTemplateProjectOutputGroup|&quot; d:VsixSubPath=&quot;ItemTemplates&quot; /&gt; " />
+    <_VSIXManifestFileLines Condition="'%(_VSIXAsset.ProjectName)' == 'ProjectTemplate'" Include="    &lt;Asset Id=&quot;Microsoft.VisualStudio.ProjectTemplate&quot; d:Source=&quot;Project&quot; d:ProjectName=&quot;%(_VSIXAsset.ProjectName)&quot; Path=&quot;ProjectTemplates&quot;                                         TargetPath=&quot;|%(_VSIXAsset.ProjectName)%3BTemplateProjectOutputGroup|&quot; d:VsixSubPath=&quot;ProjectTemplates&quot; /&gt;" />
+    <_VSIXManifestFileLines Condition="'%(_VSIXAsset.ProjectName)' == 'MefComponent'" Include="    &lt;Asset Id=&quot;Microsoft.VisualStudio.MefComponent&quot;    d:Source=&quot;Project&quot; d:ProjectName=&quot;%(_VSIXAsset.ProjectName)&quot; Path=&quot;|%(_VSIXAsset.ProjectName)|&quot; /&gt;" />
+    <_VSIXManifestFileLines Condition="'%(_VSIXAsset.ProjectName)' == 'ToolboxControl'" Include="    &lt;Asset Id=&quot;Microsoft.VisualStudio.ToolboxControl&quot;  d:Source=&quot;Project&quot; d:ProjectName=&quot;%(_VSIXAsset.ProjectName)&quot; Path=&quot;|%(_VSIXAsset.ProjectName)%3BPkgDefProjectOutputGroup|&quot; /&gt;" />
+    <_VSIXManifestFileLines Condition="'%(_VSIXAsset.ProjectName)' == 'VsPackage'" Include="    &lt;Asset Id=&quot;Microsoft.VisualStudio.VsPackage&quot;       d:Source=&quot;Project&quot; d:ProjectName=&quot;%(_VSIXAsset.ProjectName)&quot; Path=&quot;|%(_VSIXAsset.ProjectName)%3BPkgDefProjectOutputGroup|&quot; /&gt; " />
+    <_VSIXManifestFileLines Include="  &lt;/Assets&gt;" />
+    <_VSIXManifestFileLines Include="  &lt;Prerequisites&gt;" />
+    <_VSIXManifestFileLines Include="    &lt;Prerequisite Id=&quot;Microsoft.VisualStudio.Component.CoreEditor&quot; Version=&quot;[15.0,16.0)&quot; DisplayName=&quot;Visual Studio core editor&quot; /&gt;" />
+    <_VSIXManifestFileLines Include="  &lt;/Prerequisites&gt;" />
+    <_VSIXManifestFileLines Include="&lt;/PackageManifest&gt;" />
+  </ItemGroup>
+
+  <WriteLinesToFile File="$(VsixManifestFilePath)" Lines="@(_VSIXManifestFileLines)" Overwrite="yes" />
+  <WriteLinesToFile File="$(VsixManifestFilePath)" Lines="$(LicenseFileText)" Overwrite="yes" />
+
+  </Target>
+
+  <Target Name="GenerateSourceExtensionVsixManifestFile" Condition="'$(DeployExtension)' == 'true'" BeforeTargets="FindSourceVsixManifest" DependsOnTargets="$(BeforeFindSourceVsixManifestDependsOn)" />
+  
+  <!--                -->
+  <!--   References   -->
+  <!--                -->
+  <PropertyGroup>
+    <IncludeCommonReferences Condition="'$(IncludeCommonReferences)' == ''">true</IncludeCommonReferences>
+  </PropertyGroup>
+
+<Target Name="CreateDebuggableModule" AfterTargets="AfterBuild" Condition="'@(PSModuleManifest)' != ''">
+    <PropertyGroup>
+      <ModuleFolder>$(OutputPath)\$(AssemblyName)\</ModuleFolder>
+      <DestinationModuleManifest>$(ModuleFolder)$(AssemblyName).psd1</DestinationModuleManifest>
+    </PropertyGroup>
+    <ItemGroup>
+      <CopyFiles Include="$(OutputPath)\*.dll" />
+      <CopyFiles Include="@(Content)" />
+      <_ModuleManifestFileLines Include="@{" />
+      <_ModuleManifestFileLines Include="    RootModule      = '%(PSModuleManifest.RootModule)'" />
+      <_ModuleManifestFileLines Include="    ModuleVersion   = '%(PSModuleManifest.ModuleVersion)'" />
+      <_ModuleManifestFileLines Include="    GUID            = '%(PSModuleManifest.Guid)'" />
+      <_ModuleManifestFileLines Include="    Author          = '%(PSModuleManifest.Author)'" />
+      <_ModuleManifestFileLines Include="    CompanyName     = '%(PSModuleManifest.CompanyName)'" />
+      <_ModuleManifestFileLines Include="    Copyright       = '%(PSModuleManifest.Copyright)'" />
+      <_ModuleManifestFileLines Include="    CmdletsToExport = '%(PSModuleManifest.CmdletsToExport)'" />
+      <_ModuleManifestFileLines Include="    AliasesToExport = '%(PSModuleManifest.AliasesToExport)'" />
+      <_ModuleManifestFileLines Include="}" />
+    </ItemGroup>
+    <MakeDir Directories="$(ModuleFolder)" />
+    <Copy SourceFiles="@(CopyFiles)" DestinationFolder="$(ModuleFolder)" OverwriteReadOnlyFiles="true" />    
+    <WriteLinesToFile Lines="@(_ModuleManifestFileLines)" File="$(DestinationModuleManifest)" Overwrite="true" />
+  </Target>
+
+  <ItemDefinitionGroup>
+    <Reference>
+      <Private>false</Private>
+    </Reference>
+  </ItemDefinitionGroup>
+
+  <Choose>
+    <When Condition="'$(IncludeCommonReferences)' == 'true'">
+      <ItemGroup>
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Design" />
+        <Reference Include="System.Xml" />
+        <Reference Include="System.Xml.Linq" />
+        <Reference Include="System.ComponentModel.Composition" />
+        <!--<Reference Include="System.Collections.Immutable">
+          <Private>true</Private>
+        </Reference>-->
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeMSBuildReferences)' == 'true'">
+      <ItemGroup>
+        <Reference Include="Microsoft.Build">
+          <Private>true</Private>
+        </Reference>
+        <Reference Include="Microsoft.Build.Framework">
+          <Private>true</Private>
+        </Reference>
+        <Reference Include="Microsoft.Build.Utilities.Core">
+          <Private>true</Private>
+        </Reference>
+        <Reference Include="Microsoft.Build.Tasks.Core">
+          <Private>true</Private>
+        </Reference>
+        <Reference Include="Microsoft.Build.Engine">
+          <Private>true</Private>
+        </Reference>
+        <Reference Include="Microsoft.Build.Conversion.Core">
+          <Private>true</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeMSBuildTaskReferences)' == 'true'">
+      <ItemGroup>
+        <Reference Include="Microsoft.Build" />
+        <Reference Include="Microsoft.Build.Framework" />
+        <Reference Include="Microsoft.Build.Utilities.Core" />
+        <Reference Include="Microsoft.Build.Tasks.Core" />
+        <Reference Include="Microsoft.Build.Engine" />
+        <Reference Include="Microsoft.Build.Conversion.Core" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeWindowsXamlReferences)' == 'true'">
+      <ItemGroup>
+        <Reference Include="System.Xaml" />
+        <Reference Include="WindowsBase" />
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludePowerShellReferences)' == 'true'">
+      <ItemGroup>
+        <Reference Include="System.Management" />
+        <Reference Include="System.Management.Automation" />
+        <Reference Include="Microsoft.Management.Infrastructure" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeVSPackageReferences)' == 'true'">
+
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.CommandBars, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <EmbedInteropTypes>False</EmbedInteropTypes>
+        </Reference>
+      </ItemGroup>
+      
+      <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json">
+          <Version>10.0.3</Version>
+        </PackageReference>
+        <PackageReference Include="EnvDTE100">
+          <Version>10.0.1</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Build.DesignTime.15.0">
+          <Version>15.0.0</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.ComponentModelHost">
+          <Version>15.0.26606</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Composition">
+          <Version>15.3.38</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.ProjectSystem">
+          <Version>15.3.224</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Shell.15.0">
+          <Version>15.0.26606</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.12.0">
+          <Version>12.0.30110</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime">
+          <Version>14.3.25407</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.LanguageServices">
+          <Version>2.3.0</Version>
+        </PackageReference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  
+
+  <Choose>
+    <When Condition="'$(IncludeDesignTimeReferences)' == 'true'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.15.1.DesignTime" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.14.3.DesignTime" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.14.2.DesignTime" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.14.1.DesignTime" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime" />
+        <Reference Include="Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeVisualStudioInteropReferences)' == 'true'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.OLE.Interop" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.10.0" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.11.0" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.12.0" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeDTEReferences)' == 'true'">
+      <ItemGroup>
+        <Reference Include="EnvDTE" />
+        <Reference Include="EnvDTE80" />
+        <Reference Include="EnvDTE90" />
+        <Reference Include="EnvDTE100" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeVSLangProjReferences)' == 'true'">
+      <ItemGroup>
+        <Reference Include="VSLangProj" />
+        <Reference Include="VSLangProj2" />
+        <Reference Include="VSLangProj80" />
+        <Reference Include="VSLangProj90" />
+        <Reference Include="VSLangProj100" />
+        <Reference Include="VSLangProj110" />
+        <Reference Include="VSLangProj140" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeTextReferences)'=='true'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.Text.Data" />
+        <Reference Include="Microsoft.VisualStudio.Text.Logic" />
+        <Reference Include="Microsoft.VisualStudio.Text.UI" />
+        <Reference Include="Microsoft.VisualStudio.Text.UI.Wpf" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeLanguageReferences)'=='true'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.CoreUtility" />
+        <Reference Include="Microsoft.VisualStudio.Language.Intellisense" />
+        <Reference Include="Microsoft.VisualStudio.Language.NavigateTo.Interfaces" />
+        <Reference Include="Microsoft.VisualStudio.Language.StandardClassification" />
+        <Reference Include="Microsoft.VisualStudio.Package.LanguageService.15.0" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeVSShellReferences)' == 'true'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.Shell.15.0" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Design" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Embeddable" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Framework" />
+
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.15.1.DesignTime" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.14.3.DesignTime" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.14.2.DesignTime" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.14.1.DesignTime" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" />
+        <Reference Include="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime" />
+
+        <Reference Include="Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeTextManagerReferences)'=='true'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.TextManager.Interop" />
+        <Reference Include="Microsoft.VisualStudio.TextManager.Interop.10.0" />
+        <Reference Include="Microsoft.VisualStudio.TextManager.Interop.11.0" />
+        <Reference Include="Microsoft.VisualStudio.TextManager.Interop.12.0" />
+        <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0" />
+        <Reference Include="Microsoft.VisualStudio.TextManager.Interop.9.0" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeNuGetReferences)' == 'true'">
+      <ItemGroup>
+        <PackageReference Include="NuGet.Client" Version="4.0.0" />
+        <PackageReference Include="NuGet.Core" Version="2.14.0" />
+        <PackageReference Include="NuGet.PackageManagement" Version="4.0.0" />
+        <PackageReference Include="NuGet.Protocol.VisualStudio" Version="4.0.0" />
+        <PackageReference Include="NuGet.Common" Version="4.0.0" />
+        <PackageReference Include="NuGet.VisualStudio" Version="4.0.0" />
+        <PackageReference Include="NuGet.Protocol.Core.V2" Version="3.5.0" />
+        <PackageReference Include="NuGet.Protocol.Core.V3" Version="4.0.0" />
+      </ItemGroup>
+    </When>
+  </Choose>
+  
+</Project>

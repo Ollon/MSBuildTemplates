@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Ollon.VisualStudio.Extensibility.TemplateWizards;component/Themes/Templates/ComboBoxEditableTemplate.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Ollon.VisualStudio.Extensibility.TemplateWizards;component/Themes/Templates/ComboBoxTemplate.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Ollon.VisualStudio.Extensibility.TemplateWizards;component/Themes/Templates/TemplateMerger.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

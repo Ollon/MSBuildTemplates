@@ -1,0 +1,22 @@
+<Project>
+
+  <PropertyGroup>
+    <EnableDefaultItems>true</EnableDefaultItems>
+    <IncludeCommonReferences>true</IncludeCommonReferences>
+  </PropertyGroup>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+
+
+
+  <PropertyGroup>
+    <TargetFramework>net47</TargetFramework>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+  </PropertyGroup>
+
+
+
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+</Project>

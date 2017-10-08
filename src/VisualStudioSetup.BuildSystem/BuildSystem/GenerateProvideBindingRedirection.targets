@@ -1,0 +1,54 @@
+﻿<!--
+***********************************************************************************************
+Directory.Build.Assembly.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (c) 2017 Ollon, LLC. All rights reserved. 
+***********************************************************************************************
+-->
+<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <GeneratedProvideBindingRedirectionFile>$(IntermediateOutputPath)GeneratedProvideBindingRedirection(GeneratedFileExtension)</GeneratedProvideBindingRedirectionFile>
+  </PropertyGroup>
+
+
+  <Target Name="GenerateProvideBindingRedirectionFile"
+          Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+          Outputs="$(GeneratedProvideBindingRedirectionFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'$(ProvideBindingRedirection)' == 'true'">
+    
+    <CreateItem Include="Microsoft.VisualStudio.Shell.ProvideBindingRedirectionAttribute">
+      <Output TaskParameter="Include" ItemName="ProvideBindingRedirectionAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+      AssemblyAttributes="@(ProvideBindingRedirectionAttribute)"
+      Language="$(Language)"
+      OutputFile="$(GeneratedProvideBindingRedirectionFile)"
+      Condition="'$(ProvideBindingRedirection)' == 'true'">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+
+
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>
+      GenerateProvideBindingRedirectionFile;
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
+  </PropertyGroup>
+
+</Project>

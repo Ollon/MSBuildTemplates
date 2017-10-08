@@ -1,0 +1,139 @@
+﻿<ui:DialogWindow
+    x:Class="Ollon.VisualStudio.Extensibility.Dialogs.FolderBrowserDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialogs="clr-namespace:Ollon.VisualStudio.Extensibility.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:themes="clr-namespace:Ollon.VisualStudio.Extensibility.Themes"
+    xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+    Title="Browse For Folder"
+    Width="400"
+    Height="400"
+    DataContext="{Binding ElementName=view, Path=ViewModel}"
+    ResizeMode="CanResizeWithGrip"
+    mc:Ignorable="d">
+    <DockPanel Width="Auto" Height="Auto">
+
+
+        <!--  The selected folder path  -->
+        <StackPanel DockPanel.Dock="Bottom">
+            <TextBox
+                MinHeight="25"
+                Margin="5"
+                VerticalContentAlignment="Center"
+                Text="{Binding SelectedFolder}" />
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button
+                    Width="75"
+                    Margin="10"
+                    Click="Ok_Click">
+                    Ok
+                </Button>
+                <Button
+                    Width="75"
+                    Margin="10"
+                    IsCancel="True">
+                    Cancel
+                </Button>
+            </StackPanel>
+        </StackPanel>
+
+        <DockPanel>
+
+            <!--  Quick navigation panel on left  -->
+            <Border BorderBrush="Gray" BorderThickness="2">
+                <StackPanel
+                    HorizontalAlignment="Left"
+                    DockPanel.Dock="Left"
+                    Orientation="Vertical">
+                    <Button
+                        Command="{Binding FolderSelectedCommand}"
+                        CommandParameter="{x:Static system:Environment+SpecialFolder.Desktop}">
+                        <StackPanel>
+                            <Image
+                                Width="55"
+                                Height="35"
+                                Source="Images\Desktop.png" />
+                            <TextBlock HorizontalAlignment="Center">Desktop</TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Command="{Binding FolderSelectedCommand}"
+                        CommandParameter="{x:Static system:Environment+SpecialFolder.ProgramFiles}">
+                        <StackPanel>
+                            <Image
+                                Width="55"
+                                Height="35"
+                                Source="Images\ProgramFiles.png" />
+                            <TextBlock HorizontalAlignment="Center">Program Files</TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Command="{Binding FolderSelectedCommand}"
+                        CommandParameter="{x:Static system:Environment+SpecialFolder.MyDocuments}">
+
+                        <StackPanel>
+                            <Image
+                                Width="55"
+                                Height="35"
+                                Source="Images\MyDocuments.png" />
+                            <TextBlock HorizontalAlignment="Center">My Documents</TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Command="{Binding FolderSelectedCommand}"
+                        CommandParameter="{x:Static system:Environment+SpecialFolder.MyPictures}">
+                        <StackPanel>
+                            <Image
+                                Width="55"
+                                Height="35"
+                                Source="Images\MyPictures.png" />
+                            <TextBlock HorizontalAlignment="Center">My Pictures</TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+            </Border>
+
+            <!--  The windows explorer style treeview of folders  -->
+            <TreeView
+                ItemsSource="{Binding Folders}"
+                SelectedValuePath="">
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                        <Setter Property="FontWeight" Value="Normal" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Folders}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image
+                                Height="13"
+                                Margin="2"
+                                Source="{Binding FolderIcon}" />
+                            <TextBlock
+                                Height="13"
+                                Margin="2"
+                                Text="{Binding FolderName}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+
+        </DockPanel>
+
+    </DockPanel>
+</ui:DialogWindow>

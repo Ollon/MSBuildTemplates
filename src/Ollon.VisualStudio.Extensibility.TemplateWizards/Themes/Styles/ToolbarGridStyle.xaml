@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:theme="clr-namespace:Ollon.VisualStudio.Extensibility.Themes">
+    <Style x:Key="ToolbarGrid" TargetType="Grid">
+        <Setter Property="Background" Value="{DynamicResource {x:Static theme:Brushes.ToolBarBackgroundKey}}" />
+        <Setter Property="ColumnSpan" Value="50" />
+    </Style>
+</ResourceDictionary>

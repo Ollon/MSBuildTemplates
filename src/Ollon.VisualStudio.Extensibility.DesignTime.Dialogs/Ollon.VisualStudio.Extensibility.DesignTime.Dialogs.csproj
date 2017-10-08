@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IncludeVSPackageReferences>true</IncludeVSPackageReferences>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C1CBD59F-BB69-4CF3-BC85-FAB58729BD56}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <RootNamespace>Ollon.VisualStudio</RootNamespace>
+    <AssemblyName>Ollon.VisualStudio.Extensibility.DesignTime.Dialogs</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>DialogsKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Extensibility\Dialogs\DialogResources.Designer.cs">
+      <DependentUpon>DialogResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Extensibility\Dialogs\NewSolution\NewSolutionDialog.cs" />
+    <Compile Include="Extensibility\Dialogs\NewSolution\NewSolutionDialogFactory.cs" />
+    <Compile Include="Extensibility\Dialogs\NewSolution\NewSolutionDialogInfrastructure.cs" />
+    <Compile Include="Extensibility\Dialogs\NewSolution\NewSolutionDialogView.xaml.cs">
+      <DependentUpon>NewSolutionDialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Extensibility\Dialogs\NewSolution\NewSolutionDialogViewModel.cs" />
+    <Compile Include="Extensibility\Dialogs\NewSolution\SolutionExplorer\ProjectKind.cs" />
+    <Compile Include="Extensibility\Dialogs\NewSolution\SolutionExplorer\ProjectLanguage.cs" />
+    <Compile Include="Extensibility\Dialogs\NewSolution\SolutionExplorer\SolutionNode.cs" />
+    <Compile Include="ProjectTypeGuids.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Themes\Brushes.cs" />
+    <Compile Include="Themes\Colors.cs" />
+    <EmbeddedResource Include="Extensibility\Dialogs\DialogResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DialogResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="DialogsKey.snk" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Extensibility\Dialogs\NewSolution\NewSolutionDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="StyleDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Shell.15.0">
+      <Version>15.0.26606</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ollon.VisualStudio.Extensibility.DesignTime\Ollon.VisualStudio.Extensibility.DesignTime.csproj">
+      <Project>{36D25D82-504B-4FDE-BE0D-D71CFB46A038}</Project>
+      <Name>Ollon.VisualStudio.Extensibility.DesignTime</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\MSBuild16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\FolderBottomPanel16x16.png" />
+    <Resource Include="Themes\Icons\FolderOpened16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\PowershellInteractiveWindow16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\PowerShellProject_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\VSO_NewSolutionFolder_16x.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\CSConsole_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\CS_ProjectSENode_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\CPP_ProjectSENode_16x_.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\VSO_FolderOpen_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\VSO_Folder_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\VSO_Create_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\VSO_Cancel_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\VSO_Collapse_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Icons\VSO_Expand_16x.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name>CPS Class Library</Name>
+    <Description>CPS Class Library</Description>
+    <Icon Package="{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}" ID="4547" />
+    <TemplateID>CPSClassLibrary</TemplateID>
+    <ProjectType>CSharp</ProjectType>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>ClassLibrary</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <CreateInPlace>true</CreateInPlace>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="CPSClassLibrary.csproj" ReplaceParameters="true">
+      <Folder Name="Properties" TargetFolderName="Properties" />
+    </Project>
+  </TemplateContent>
+</VSTemplate>

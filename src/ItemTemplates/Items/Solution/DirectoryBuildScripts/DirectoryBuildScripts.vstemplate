@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>MSBuild Directory Build Scripts</Name>
+    <Description>Directory.Build.props and Directory.Build.targets for the Solution</Description>
+    <Icon>Property.png</Icon>
+    <ProjectType>General</ProjectType>
+    <DefaultName>ThisValueIsIgnored</DefaultName>
+  </TemplateData>
+  <TemplateContent>
+    <!--<ProjectItem ReplaceParameters="true" TargetFileName="Directory.Build.Xaml.targets">Directory.Build.Xaml.targets.xml</ProjectItem>
+    <ProjectItem ReplaceParameters="true" TargetFileName="Directory.Build.targets">Directory.Build.targets.xml</ProjectItem>
+    <ProjectItem ReplaceParameters="true" TargetFileName="Directory.Build.props">Directory.Build.props.xml</ProjectItem>-->
+  </TemplateContent>
+  <WizardExtension>
+    <Assembly>Ollon.VisualStudio.Extensibility.TemplateWizards, Version=15.3.2.0, Culture=neutral, PublicKeyToken=1c6c27edd1fec45c</Assembly>
+    <FullClassName>Ollon.VisualStudio.Extensibility.TemplateWizards.SolutionItemsTemplateWizard</FullClassName>
+  </WizardExtension>
+</VSTemplate>

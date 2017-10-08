@@ -1,0 +1,45 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <AssemblySemanticVersionString Condition="'$(AssemblySemanticVersionString)' == ''">-REL2017</AssemblySemanticVersionString>
+    <VisualStudioVersionMajor Condition="'$(VisualStudioVersionMajor)' == ''">15</VisualStudioVersionMajor>
+    <VisualStudioVersionMinor Condition="'$(VisualStudioVersionMinor)' == ''">3</VisualStudioVersionMinor>
+    <BuildNumber Condition="'$(BuildNumber)' == ''">$([System.Datetime]::Now.Day)</BuildNumber>
+    <AssemblyTitle Condition="'$(AssemblyTitle)'==''">$(AssemblyName)</AssemblyTitle>
+    <AssemblyProduct Condition="'$(AssemblyProduct)' == ''">$(AssemblyName)</AssemblyProduct>
+    <AssemblyCompany Condition="'$(AssemblyCompany)' == ''">Ollon, LLC</AssemblyCompany>
+    <AssemblyCopyright Condition="'$(AssemblyCopyright)' == ''">© $([System.DateTime]::Now.Year) $(AssemblyCompany). All Rights Reserved.</AssemblyCopyright>
+    <AssemblyDescription Condition="'$(AssemblyDescription)' == ''">$(AssemblyName)</AssemblyDescription>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="'$(AutoIncrementBuildRevision)' == 'true'">
+      <PropertyGroup>
+        <SecondsFromMidnight>$([System.Decimal]::Divide($([System.DateTime]::Now.TimeOfDay.TotalSeconds), 2))</SecondsFromMidnight>
+        <BuildRevision>$([System.Decimal]::Parse(`$(SecondsFromMidnight)`))</BuildRevision>
+        <BuildRevision>$(BuildRevision.Split(`.`)[0])</BuildRevision>
+        <AssemblyBuildVersion>$(VisualStudioVersionMajor).$(VisualStudioVersionMinor).$(BuildNumber).$(BuildRevision)</AssemblyBuildVersion>
+        <AssemblyFileVersion>$(VisualStudioVersionMajor).$(VisualStudioVersionMinor).$(BuildNumber).0</AssemblyFileVersion>
+        <AssemblyVersion>$(AssemblyBuildVersion)</AssemblyVersion>
+        <AssemblyInformationalVersion>$(AssemblyVersion)$(AssemblySemanticVersionString)</AssemblyInformationalVersion>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <AssemblyBuildVersion>$(VisualStudioVersionMajor).$(VisualStudioVersionMinor).0.0</AssemblyBuildVersion>
+        <AssemblyFileVersion>$(AssemblyBuildVersion)</AssemblyFileVersion>
+        <AssemblyVersion>$(AssemblyBuildVersion)</AssemblyVersion>
+        <AssemblyInformationalVersion>$(AssemblyBuildVersion)$(AssemblySemanticVersionString)</AssemblyInformationalVersion>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+
+
+
+</Project>

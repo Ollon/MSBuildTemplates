@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Ollon.VisualStudio.Extensibility.TemplateWizards;component/Themes/Brushes/Brushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="FooterGrid" TargetType="Grid">
+        <Setter Property="Background" Value="{StaticResource Styles.FooterGrid.BackGround}" />
+        <Setter Property="ColumnSpan" Value="50" />
+    </Style>
+</ResourceDictionary>

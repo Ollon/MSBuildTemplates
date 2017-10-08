@@ -1,0 +1,127 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <GeneratedAssemblyInfoFile>$(IntermediateOutputPath)GeneratedAssemblyInfo_$(BuildVersion)$(GeneratedFileExtension)</GeneratedAssemblyInfoFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyTitleAttribute">
+      <_Parameter1>$(AssemblyName)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyCompanyAttribute">
+      <_Parameter1>$(Company)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyCopyrightAttribute">
+      <_Parameter1>$(Copyright)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyProductAttribute">
+      <_Parameter1>$(AssemblyName)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyDescriptionAttribute">
+      <_Parameter1>$(AssemblyName)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyVersionAttribute">
+      <_Parameter1>$(AssemblyVersion)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyFileVersionAttribute">
+      <_Parameter1>$(BuildVersion)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyInformationalVersionAttribute">
+      <_Parameter1>$(BuildVersion). Commit Hash: $(GitHeadSha)</_Parameter1>
+    </AssemblyVersionAttribute>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>GenerateAssemblyInfoFile;$(CoreCompileDependsOn)</CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <Target Name="GenerateAssemblyInfoFile"
+          Inputs="$(MSBuildThisFileFullPath)"
+          Outputs="$(GeneratedAssemblyInfoFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'$(AutoGenerateAssemblyInfo)' == 'true'">
+
+    <WriteCodeFragment
+        AssemblyAttributes="@(AssemblyVersionAttribute)"
+        Language="$(Language)"
+        OutputFile="$(GeneratedAssemblyInfoFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+  </Target>
+
+
+  <PropertyGroup Condition="'$(CreateVsixContainer)' == 'true'">
+    <GetVsixSourceItemsDependsOn>IncludeNuGetResolvedAssets;$(GetVsixSourceItemsDependsOn)</GetVsixSourceItemsDependsOn>
+  </PropertyGroup>
+
+  <Target Name="IncludeNuGetResolvedAssets" AfterTargets="ResolveReferences" Condition="'$(CreateVsixContainer)' == 'true'">
+    <ItemGroup>
+      <_ReferenceCopyLocalPathsWithPotentialInclusions Include="@(ReferenceCopyLocalPaths)"/>
+
+      <VSIXCopyLocalReferenceSourceItem Include="@(_ReferenceCopyLocalPathsWithPotentialInclusions)"
+        Condition="'%(_ReferenceCopyLocalPathsWithPotentialInclusions.Extension)' != '.pdb'">
+        <ForceIncludeInVsix>true</ForceIncludeInVsix>
+        <Private>true</Private>
+      </VSIXCopyLocalReferenceSourceItem>
+
+
+    </ItemGroup>
+    <Message Importance="high" Text="@(VSIXCopyLocalReferenceSourceItem)" />
+  </Target>
+
+
+  <Import Project="$(VsToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(ImportVSSDKTargets)' == 'true'"/>
+
+
+  <Target Name="VSIXIdentifierProjectOutputGroup" Condition="'$(CreateVsixContainer)' == 'false'" />
+  <Target Name="VSIXNameProjectOutputGroup" Condition="'$(CreateVsixContainer)' == 'false'" />
+
+
+  <PropertyGroup>
+    <GeneratedInternalsVisibleToFile>$(IntermediateOutputPath)GeneratedInternalsVisibleTo$(GeneratedFileExtension)</GeneratedInternalsVisibleToFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>GenerateInternalsVisibleToFile;$(CoreCompileDependsOn)</CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <InternalsVisibleTo>
+      <Visible>false</Visible>
+    </InternalsVisibleTo>
+  </ItemDefinitionGroup>
+
+  <PropertyGroup>
+    <InternalsVisibleToSuffix>, PublicKey=$(PublicKey)</InternalsVisibleToSuffix>
+  </PropertyGroup>
+
+  <Target Name="GenerateInternalsVisibleToFile"
+          Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+          Outputs="$(GeneratedInternalsVisibleToFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'@(InternalsVisibleTo)' != ''">
+    <CreateItem Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute"
+                AdditionalMetadata="_Parameter1=%(InternalsVisibleTo.Identity)$(InternalsVisibleToSuffix)"
+                Condition="'@(InternalsVisibleTo)' != ''">
+      <Output TaskParameter="Include" ItemName="InternalsVisibleToAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+        AssemblyAttributes="@(InternalsVisibleToAttribute)"
+        Language="$(Language)"
+        OutputFile="$(GeneratedInternalsVisibleToFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+
+
+
+</Project>

@@ -1,0 +1,202 @@
+﻿<Rule
+    xmlns="http://schemas.microsoft.com/build/2009/properties"
+    Name="GeneralBrosweObject"
+    Description="Project Properties"
+    DisplayName="Project Properties"
+    OverrideMode="Replace"
+    PageTemplate="General">
+
+    <Rule.DataSource>
+        <DataSource
+            HasConfigurationCondition="False"
+            Label="Globals"
+            Persistence="ProjectFile"
+            SourceOfDefaultValue="AfterContext" />
+    </Rule.DataSource>
+
+    <Rule.Properties>
+
+        <BoolProperty
+            Name="ImportVSSDKTargets"
+            Category="Advanced"
+            Description="Should the project import the Visual Studio SDK Targets?"
+            DisplayName="Import VSSDK Targets"
+            Visible="True" />
+
+        <EnumProperty
+            Name="TargetFramework"
+            Category="Advanced"
+            Description="The target framework for this project."
+            DisplayName="Target Framework">
+            <EnumProperty.AdmissibleValues>
+                <EnumValue
+                    Name="net35"
+                    Description=".NET Framework 3.5"
+                    DisplayName="net35" />
+                <EnumValue
+                    Name="net40"
+                    Description=".NET Framework 4.0"
+                    DisplayName="net40" />
+                <EnumValue
+                    Name="net45"
+                    Description=".NET Framework 4.5"
+                    DisplayName="net45" />
+                <EnumValue
+                    Name="net451"
+                    Description=".NET Framework 4.5.1"
+                    DisplayName="net451" />
+                <EnumValue
+                    Name="net452"
+                    Description=".NET Framework 4.5.2"
+                    DisplayName="net452" />
+                <EnumValue
+                    Name="net46"
+                    Description=".NET Framework 4.6"
+                    DisplayName="net46" />
+                <EnumValue
+                    Name="net461"
+                    Description=".NET Framework 4.6.1"
+                    DisplayName="net461" />
+                <EnumValue
+                    Name="net462"
+                    Description=".NET Framework 4.6.2"
+                    DisplayName="net462" />
+
+                <EnumValue
+                    Name="net47"
+                    Description=".NET Framework 4.7"
+                    DisplayName="net47" />
+
+                <EnumValue
+                    Name="netstandard13"
+                    Description=".NETStandard 1.3"
+                    DisplayName="netstandard13" />
+                <EnumValue
+                    Name="netstandard14"
+                    Description=".NETStandard 1.4"
+                    DisplayName="netstandard14" />
+                <EnumValue
+                    Name="netstandard15"
+                    Description=".NETStandard 1.5"
+                    DisplayName="netstandard15" />
+                <EnumValue
+                    Name="netstandard16"
+                    Description=".NETStandard 1.6"
+                    DisplayName="netstandard16" />
+                <EnumValue
+                    Name="netstandard20"
+                    Description=".NETStandard 2.0"
+                    DisplayName="netstandard20" />
+            </EnumProperty.AdmissibleValues>
+        </EnumProperty>
+
+        <BoolProperty
+            Name="EnableDefaultItems"
+            Category="Advanced"
+            Description="Should the project declare common project items implicity through globbing?"
+            DisplayName="Enable Default Items"
+            Visible="True" />
+
+        <StringListProperty
+            Name="InternalsVisibleTo"
+            Category="Advanced"
+            Description="Internals Visible To"
+            DisplayName="Internals Visible To"
+            RendererValueSeparator=";"
+            Separator=";"
+            Visible="True" />
+
+        <StringProperty
+            Name="AssemblyName"
+            Category="Advanced"
+            Description="The name of the assembly."
+            DisplayName="Asembly Name"
+            Visible="True" />
+
+        <StringProperty
+            Name="RootNamespace"
+            Category="Advanced"
+            Description="The default namespace for the project."
+            DisplayName="Root Namespace"
+            Visible="True" />
+
+        <BoolProperty
+            Name="UseCommonOutputDirectory"
+            Category="Advanced"
+            Description="Should output directory contain dependencies after build?"
+            DisplayName="Use Common Output Directory"
+            Visible="True" />
+
+
+        <BoolProperty
+            Name="IsCPSProject"
+            Category="General"
+            Description="Is this project a Common Project System (CPS) Project?"
+            DisplayName="CPS Project"
+            ReadOnly="True" />
+
+
+        <StringProperty
+            Name="MSBuildProjectFile"
+            Category="General"
+            Description="The default namespace for the project."
+            DisplayName="Root Namespace"
+            Visible="True" />
+
+        <!--  This property is used to provide the value of OutputType through BrowseObject, which is used by Property pages  -->
+        <IntProperty
+            Name="OutputType"
+            DisplayName="Output Type"
+            Visible="False">
+            <IntProperty.DataSource>
+                <DataSource
+                    HasConfigurationCondition="False"
+                    PersistedName="OutputType"
+                    Persistence="ProjectFileWithInterception"
+                    SourceOfDefaultValue="AfterContext" />
+            </IntProperty.DataSource>
+        </IntProperty>
+        <!--  This property is used to provide the value of OutputTypeEx through BrowseObject, which is used by Property pages  -->
+        <IntProperty
+            Name="OutputTypeEx"
+            DisplayName="Output Type Ex"
+            Visible="False">
+            <IntProperty.DataSource>
+                <DataSource
+                    HasConfigurationCondition="False"
+                    PersistedName="OutputTypeEx"
+                    Persistence="ProjectFileWithInterception"
+                    SourceOfDefaultValue="AfterContext" />
+            </IntProperty.DataSource>
+        </IntProperty>
+
+        <StringProperty
+            Name="FileName"
+            Category="General"
+            DisplayName="Project File"
+            ReadOnly="True">
+            <StringProperty.DataSource>
+                <DataSource
+                    PersistedName="MSBuildProjectFile"
+                    Persistence="ProjectFile"
+                    SourceOfDefaultValue="AfterContext" />
+            </StringProperty.DataSource>
+        </StringProperty>
+
+        <StringProperty
+            Name="FullPath"
+            Category="General"
+            DisplayName="Project Folder"
+            ReadOnly="True">
+            <StringProperty.DataSource>
+                <DataSource
+                    PersistedName="MSBuildProjectDirectory"
+                    Persistence="ProjectFile"
+                    SourceOfDefaultValue="AfterContext" />
+            </StringProperty.DataSource>
+        </StringProperty>
+    </Rule.Properties>
+
+
+
+</Rule>

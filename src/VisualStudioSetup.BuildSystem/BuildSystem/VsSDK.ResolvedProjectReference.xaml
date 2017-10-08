@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--  Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.  -->
+<Rule
+    xmlns="http://schemas.microsoft.com/build/2009/properties"
+    Name="ResolvedProjectReference"
+    Description="Resolved reference"
+    DisplayName="Resolved Project Reference"
+    OverrideMode="Extend"
+    PageTemplate="generic">
+    <Rule.DataSource>
+        <DataSource
+            HasConfigurationCondition="False"
+            ItemType="ProjectReference"
+            MSBuildTarget="ResolveProjectReferencesDesignTime"
+            Persistence="ResolvedReference"
+            SourceOfDefaultValue="AfterContext"
+            SourceType="TargetResults" />
+    </Rule.DataSource>
+
+    <StringListProperty
+        Name="IncludeOutputGroupsInVSIX"
+        Category="VSIX"
+        Description="Semicolon delimited list of the output groups of the project reference that will be included in the VSIX container. Valid values: BuiltProjectOutputGroup, PkgdefProjectOutputGroup."
+        DisplayName="Output Groups Included in VSIX"
+        Separator=";" />
+
+    <StringListProperty
+        Name="IncludeOutputGroupsInVSIXLocalOnly"
+        Category="VSIX"
+        Description="Semicolon delimited list of the output groups of the project reference that will be included in the VSIX container. Valid values: DebugSymbolsProjectOutputGroup.."
+        DisplayName="Output Groups Included in VSIX (Local Only)"
+        Separator=";" />
+
+    <StringProperty
+        Name="VSIXSubPath"
+        Category="VSIX"
+        Default=""
+        Description="Specifies the subpath under the InstallRoot where the file will be installed."
+        DisplayName="VSIX Sub Path"
+        Visible="True" />
+
+    <EnumProperty
+        Name="InstallRoot"
+        Category="VSIX"
+        Description="Specifies which root directory to install the file. By default, the file will be installed to the extension directory."
+        DisplayName="Install Root">
+        <EnumValue
+            Name="Default"
+            DisplayName="Default"
+            IsDefault="True" />
+        <EnumValue Name="MSBuild" DisplayName="MSBuild" />
+        <EnumValue Name="Schemas" DisplayName="Schemas" />
+        <EnumValue Name="PublicAssemblies" DisplayName="PublicAssemblies" />
+        <EnumValue Name="Licenses" DisplayName="Licenses" />
+        <EnumValue Name="ReferenceAssemblies" DisplayName="ReferenceAssemblies" />
+    </EnumProperty>
+
+    <EnumProperty
+        Name="TemplateType"
+        Category="VSIX"
+        Description="Specifies the type of template for references to projects that output templates. Valid values: Project or Item."
+        DisplayName="Template Type">
+        <EnumValue Name="Project" DisplayName="Project" />
+        <EnumValue Name="Item" DisplayName="Item" />
+        <EnumValue Name="ProjectGroup" DisplayName="Project Group" />
+    </EnumProperty>
+
+    <BoolProperty
+        Name="ReferenceOutputAssembly"
+        Category="Advanced"
+        Default="True"
+        Description="Specifies whether to reference the output assembly for the project."
+        DisplayName="Reference Output Assembly" />
+</Rule>

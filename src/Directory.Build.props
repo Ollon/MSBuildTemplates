@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+***********************************************************************************************
+Directory.Build.props
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (c) Ollon, LLC. All rights reserved. 
+***********************************************************************************************
+-->
+<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <!--                         -->
+  <!--   Legacy Frameworks     -->
+  <!--                         -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Exp|AnyCPU' " />
+
+  <!--                    -->
+  <!--   Build Output     -->
+  <!--                    -->
+  <PropertyGroup>
+    <UseCommonOutputDirectory Condition="'$(UseCommonOutputDirectory)' == ''">false</UseCommonOutputDirectory>
+    <WindowsAppContainer Condition="'$(WindowsAppContainer)' == ''">false</WindowsAppContainer>
+    <UseSharedCompilation Condition="'$(UseSharedCompilation)' == ''">true</UseSharedCompilation>
+  </PropertyGroup>
+
+  <!--                   -->
+  <!--   Configuration   -->
+  <!--                   -->
+  <PropertyGroup>
+
+    <Configuration>Debug</Configuration>
+    <Platform>AnyCPU</Platform>
+    <LangVersion>7.1</LangVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName Condition="'$(AssemblyName)' == ''">$(MSBuildProjectName)</AssemblyName>
+
+    <EnableSignAssembly Condition="'$(EnableSignAssembly)' == ''">true</EnableSignAssembly>
+
+    <TargetFramework Condition="'$(TargetFramework)' == ''">net47</TargetFramework>
+    <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == ''">v4.7</TargetFrameworkVersion>
+
+    <EnableGlobbing Condition="'$(EnableGlobbing)' == ''">true</EnableGlobbing>
+
+    <NoWarn>$(NoWarn);CS0649;IDE0001;IDE0003;IDE0008;CS00067</NoWarn>
+
+    <AutogenerateBindingRedirects Condition="'$(AutogenerateBindingRedirects)' == ''">true</AutogenerateBindingRedirects>
+    <DisableImplicitFrameworkReferences Condition="'$(DisableImplicitFrameworkReferences)' == ''">true</DisableImplicitFrameworkReferences>
+    <AppendTargetFrameworkToOutputPath Condition="'$(AppendTargetFrameworkToOutputPath)' == ''">false</AppendTargetFrameworkToOutputPath>
+
+    <SolutionDir>$(MSBuildThisFileDirectory)</SolutionDir>
+
+    <RepositoryDirectory>$([System.IO.Path]::GetFullPath('$(SolutionDir)..\'))</RepositoryDirectory>
+    <RepositoryDirectory Condition="!HasTrailingSlash('$(RepositoryDirectory)')">$(RepositoryDirectory)\</RepositoryDirectory>
+
+    <OutputPath>$(RepositoryDirectory)bin\$(Configuration)\$(MSBuildProjectName)\</OutputPath>
+    <BaseIntermediateOutputPath>$(RepositoryDirectory)bin\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+
+
+  <PropertyGroup Condition="'$(EnableSignAssembly)' == 'true'">
+    <PublicKey>0024000004800000940000000602000000240000525341310004000001000100BD9A6BABB1B8CFD8A341C24806777E924514D0994566039F3C1EF021ECD72AFC956EDC26E6AF7C15AD590734B679EC13F7597B7E41CF797D9622A08FA5735C98FE2A3D90BD08346972D1ED9417C78001C7FA2C97150D200045504DC33FD9CBD100E8D3D1558A17FD6DCF34AC73448692D58C390E7493DA97A08F19F5AA9042AE</PublicKey>
+    <PublicKeyToken>739e9bfa0d6e8ca2</PublicKeyToken>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(RepositoryDirectory)build\strong name keys\$(SolutionName)SharedKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <!--              -->
+  <!--   Globbing   -->
+  <!--              -->
+  <PropertyGroup Condition="'$(EnableGlobbing)' == 'false'">
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
+  </PropertyGroup>
+
+  <!--              -->
+  <!--   Versions   -->
+  <!--              -->
+  <PropertyGroup>
+    <VisualStudioVersion>15.0</VisualStudioVersion>
+    <VisualStudioVersionMajor Condition="'$(VisualStudioVersionMajor)' == ''">15</VisualStudioVersionMajor>
+    <VisualStudioVersionMinor Condition="'$(VisualStudioVersionMinor)' == ''">4</VisualStudioVersionMinor>
+    <BuildNumber>0</BuildNumber>
+    <RevisionNumber>0</RevisionNumber>
+    <BuildVersion>$(VisualStudioVersionMajor).$(VisualStudioVersionMinor).$(BuildNumber).$(RevisionNumber)</BuildVersion>
+    <AssemblyBuildVersion>$(BuildVersion)</AssemblyBuildVersion>
+  </PropertyGroup>
+
+
+  <!--            -->
+  <!--   Global   -->
+  <!--            -->
+  <PropertyGroup>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>$(RepositoryDirectory)build\rulesets\SolutionRules.ruleset</CodeAnalysisRuleSet>
+    <MinimumVisualStudioVersion>$(VisualStudioVersion)</MinimumVisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+
+  <!--                              -->
+  <!--   NuGet Package Properties   -->
+  <!--                              -->
+  <PropertyGroup Label="NuGet Packaging">
+    <NuGetRepositoryDirectory Condition="'$(NuGetRepositoryDirectory)' == ''">$(SolutionDir)..\bin\nuget\</NuGetRepositoryDirectory>
+    <PackageOutputPath Condition="'$(PackageOutputPath)' == ''">$(OutputPath)nuget\</PackageOutputPath>
+    <NoPackageAnalysis Condition="'$(NoPackageAnalysis)' == ''">true</NoPackageAnalysis>
+    <GeneratePackageOnBuild Condition="'$(GeneratePackageOnBuild)' == ''">false</GeneratePackageOnBuild>
+    <IncludeBuildOutput Condition="'$(IncludeBuildOutput)' == ''">true</IncludeBuildOutput>
+    <CopyLocalLockFileAssemblies Condition="'$(CopyLocalLockFileAssemblies)' == ''">true</CopyLocalLockFileAssemblies>
+    <Authors Condition="'$(Authors)'==''">Brad R. Marshall</Authors>
+    <Company Condition="'$(Company)'==''">Ollon, LLC</Company>
+    <Copyright Condition="'$(Copyright)'==''">© $([System.DateTime]::Now.Year) $(Company). All Rights Reserved.</Copyright>
+    <Description Condition="'$(Description)'==''">$(AssemblyName)</Description>
+    <Product Condition="'$(Product)'==''">$(AssemblyName)</Product>
+    <AssemblyTitle Condition="'$(AssemblyTitle)'==''">$(AssemblyName)</AssemblyTitle>
+    <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">$(AssemblyBuildVersion)</AssemblyVersion>
+    <PackageVersion Condition="'$(PackageVersion)' == ''">$(AssemblyBuildVersion)</PackageVersion>
+    <InformationalVersion Condition="'$(InformationalVersion)' == ''">$(AssemblyBuildVersion)</InformationalVersion>
+    <AssemblyFileVersion Condition="'$(AssemblyFileVersion)' == ''">$(AssemblyBuildVersion)</AssemblyFileVersion>
+    <PackageReleaseNotes Condition="'$(PackageReleaseNotes)' == ''">$(MSBuildProjectName)</PackageReleaseNotes>
+    <PackageProjectUrl Condition="'$(PackageProjectUrl)' == ''">https://aka.ms/vsextensibility</PackageProjectUrl>
+    <PackageLicenseUrl Condition="'$(PackageLicenseUrl)' == ''">https://aka.ms/pexunj</PackageLicenseUrl>
+    <PackageIconUrl Condition="'$(PackageIconUrl)' == ''">https://aka.ms/vsextensibilityicon</PackageIconUrl>
+    <PackageRequireLicenseAcceptance Condition="'$(PackageRequireLicenseAcceptance)' == ''">true</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+
+  <!--                           -->
+  <!--   Developer Environment   -->
+  <!--                           -->
+  <Choose>
+    <When Condition="'$(DevEnvDir)' == '*Undefined*' OR '$(DevEnvDir)' == ''">
+      <PropertyGroup>
+        <VSInstall>$([MSBuild]::GetRegistryValue(`HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\VisualStudio\SxS\VS7`, `$(VisualStudioVersion)`))\</VSInstall>
+        <DevEnvDir>$(VSInstall)Common7\IDE\</DevEnvDir>
+        <MSBuildDir>$(VSInstall)MSBuild\$(VisualStudioVersion)\Bin\</MSBuildDir>
+        <VsSDKInstall>$(VSInstall)VSSDK\</VsSDKInstall>
+        <Assemblies40>$(VsSDKInstall)VSSDK\VisualStudioIntegration\Common\Assemblies\v4.0\</Assemblies40>
+        <PropertyPageBase>$(VsSDKInstall)VisualStudioIntegration\Common\Source\CSharp\PropertyPageBase\</PropertyPageBase>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+
+  <!--                           -->
+  <!--   PowerShell              -->
+  <!--                           -->
+  <PropertyGroup Condition="'$(IsPowerShellProject)' == 'true'">
+    <PowerShellRootModule>$(AssemblyName).dll</PowerShellRootModule>
+    <PowerShellModuleVersion>$(AssemblyBuildVersion)</PowerShellModuleVersion>
+    <PowerShellGUID>$([System.Guid]::NewGuid().ToString('D'))</PowerShellGUID>
+    <PowerShellAuthor Condition="'$(Authors)' != ''">$(Authors)</PowerShellAuthor>
+    <PowerShellCompanyName Condition="'$(Company)' != ''">$(Company)</PowerShellCompanyName>
+    <PowerShellCopyright Condition="'$(Copyright)' != ''">$(Copyright)</PowerShellCopyright>
+    <PowerShellCmdletsToExport Condition="'$(PowerShellCmdletsToExport)' == ''">%2A</PowerShellCmdletsToExport>
+    <PowerShellAliasesToExport Condition="'$(PowerShellAliasesToExport)' == ''">%2A</PowerShellAliasesToExport>
+  </PropertyGroup>
+
+</Project>
+

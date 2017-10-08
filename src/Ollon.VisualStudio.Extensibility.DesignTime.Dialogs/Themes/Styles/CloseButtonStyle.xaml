@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="CloseButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="true">
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Focusable="False"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Content">
+            <Setter.Value>
+                <Rectangle Width="16" Height="16">
+                    <Rectangle.Fill>
+                        <DrawingBrush>
+                            <DrawingBrush.Drawing>
+                                <DrawingGroup>
+                                    <DrawingGroup.Children>
+                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M32,32L0,32 0,0 32,0z" />
+                                        <GeometryDrawing Brush="#FF555555" Geometry="F1M8,10L12,10 16,14 20,10 24,10 18,16 24,22 20,22 16,18 12,22 8,22 14,16z" />
+                                        <!--<GeometryDrawing Brush="#FFABABAC" Geometry="F1M8,74L12,74 16,78 20,74 24,74 18,80 24,86 20,86 16,82 12,86 8,86 14,80z" />-->
+                                        <!--<GeometryDrawing Brush="#FF2279BF" Geometry="F1M8,42L12,42 16,46 20,42 24,42 18,48 24,54 20,54 16,50 12,54 8,54 14,48z" />-->
+                                    </DrawingGroup.Children>
+                                </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Rectangle Width="16" Height="16">
+                            <Rectangle.Fill>
+                                <DrawingBrush>
+                                    <DrawingBrush.Drawing>
+                                        <DrawingGroup>
+                                            <DrawingGroup.Children>
+                                                <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M32,32L0,32 0,0 32,0z" />
+                                                <GeometryDrawing Brush="#FFABABAC" Geometry="F1M8,10L12,10 16,14 20,10 24,10 18,16 24,22 20,22 16,18 12,22 8,22 14,16z" />
+                                                <!--<GeometryDrawing Brush="#FFABABAC" Geometry="F1M8,74L12,74 16,78 20,74 24,74 18,80 24,86 20,86 16,82 12,86 8,86 14,80z" />-->
+                                                <!--<GeometryDrawing Brush="#FF2279BF" Geometry="F1M8,42L12,42 16,46 20,42 24,42 18,48 24,54 20,54 16,50 12,54 8,54 14,48z" />-->
+                                            </DrawingGroup.Children>
+                                        </DrawingGroup>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Rectangle Width="16" Height="16">
+                            <Rectangle.Fill>
+                                <DrawingBrush>
+                                    <DrawingBrush.Drawing>
+                                        <DrawingGroup>
+                                            <DrawingGroup.Children>
+                                                <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M32,32L0,32 0,0 32,0z" />
+                                                <GeometryDrawing Brush="#FF2279BF" Geometry="F1M8,10L12,10 16,14 20,10 24,10 18,16 24,22 20,22 16,18 12,22 8,22 14,16z" />
+                                                <!--<GeometryDrawing Brush="#FFABABAC" Geometry="F1M8,74L12,74 16,78 20,74 24,74 18,80 24,86 20,86 16,82 12,86 8,86 14,80z" />-->
+                                                <!--<GeometryDrawing Brush="#FF2279BF" Geometry="F1M8,42L12,42 16,46 20,42 24,42 18,48 24,54 20,54 16,50 12,54 8,54 14,48z" />-->
+                                            </DrawingGroup.Children>
+                                        </DrawingGroup>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

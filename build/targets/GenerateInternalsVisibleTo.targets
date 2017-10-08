@@ -1,0 +1,71 @@
+﻿<!--
+***********************************************************************************************
+Directory.Build.Assembly.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (c) 2017 Ollon, LLC. All rights reserved. 
+***********************************************************************************************
+-->
+<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <InternalsVisibleToSuffix>, PublicKey=$(PublicKey)</InternalsVisibleToSuffix>
+    <GeneratedInternalsVisibleToFile>$(IntermediateOutputPath)GeneratedInternalsVisibleTo$(GeneratedFileExtension)</GeneratedInternalsVisibleToFile>
+  </PropertyGroup>
+  
+  
+
+
+  <ItemDefinitionGroup>
+    <InternalsVisibleTo>
+      <Visible>false</Visible>
+    </InternalsVisibleTo>
+  </ItemDefinitionGroup>
+
+
+
+  
+
+
+  <Target Name="GenerateInternalsVisibleToFile"
+          Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+          Outputs="$(GeneratedInternalsVisibleToFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'@(InternalsVisibleTo)' != ''">
+    <ItemGroup>
+      <InternalsVisibleTo Include="$(InternalsVisibleTo)" />
+    </ItemGroup>
+    
+    
+    <CreateItem Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute"
+                AdditionalMetadata="_Parameter1=%(InternalsVisibleTo.Identity)$(InternalsVisibleToSuffix)"
+                Condition="'@(InternalsVisibleTo)' != ''">
+      <Output TaskParameter="Include" ItemName="InternalsVisibleToAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+        AssemblyAttributes="@(InternalsVisibleToAttribute)"
+        Language="$(Language)"
+        OutputFile="$(GeneratedInternalsVisibleToFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+  
+  <PropertyGroup>
+    <CoreCompileDependsOn>
+      GenerateInternalsVisibleToFile;
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
+  </PropertyGroup>
+
+</Project>

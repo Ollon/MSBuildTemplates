@@ -1,0 +1,96 @@
+<!--
+***********************************************************************************************
+VsSDK.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (c) 2017 Ollon, LLC. All rights reserved. 
+***********************************************************************************************
+-->
+<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+
+
+  <PropertyGroup Condition="'$(CreateVsixContainer)' == 'true'">
+    <GetVsixSourceItemsDependsOn>IncludeNuGetResolvedAssets;$(GetVsixSourceItemsDependsOn)</GetVsixSourceItemsDependsOn>
+  </PropertyGroup>
+
+  <Target Name="IncludeNuGetResolvedAssets" AfterTargets="ResolveReferences" Condition="'$(CreateVsixContainer)' == 'true'">
+    <ItemGroup>
+      <_ReferenceCopyLocalPathsWithPotentialInclusions Include="@(ReferenceCopyLocalPaths)"/>
+
+      <VSIXCopyLocalReferenceSourceItem Include="@(_ReferenceCopyLocalPathsWithPotentialInclusions)"
+                                        Condition="'%(_ReferenceCopyLocalPathsWithPotentialInclusions.Extension)' != '.pdb'">
+        <ForceIncludeInVsix>true</ForceIncludeInVsix>
+        <Private>true</Private>
+      </VSIXCopyLocalReferenceSourceItem>
+
+
+    </ItemGroup>
+    <Message Importance="high" Text="@(VSIXCopyLocalReferenceSourceItem->'%(Filename)%(Extension)%0A')" />
+  </Target>
+
+  <Import Project="$(VsToolsPath)\VSSDK\Microsoft.VsSDK.targets" />
+
+  <Choose>
+    <When Condition="'$(IsCPSPRoject)' == 'true'">
+      <ItemGroup>
+        <PropertyPageSchema Include="$(XamlPropertyRulesDirectory)VsSDK.VSTemplate.xaml">
+          <Context>File;BrowseObject</Context>
+        </PropertyPageSchema>
+        <PropertyPageSchema Include="$(XamlPropertyRulesDirectory)VsSDK.Content.xaml">
+          <Context>File;BrowseObject</Context>
+        </PropertyPageSchema>
+        <PropertyPageSchema Include="$(XamlPropertyRulesDirectory)VsSDK.EmbeddedResource.xaml">
+          <Context>File;BrowseObject</Context>
+        </PropertyPageSchema>
+        <PropertyPageSchema Include="$(XamlPropertyRulesDirectory)VsSDK.VSCTCompile.xaml">
+          <Context>File;BrowseObject</Context>
+        </PropertyPageSchema>
+        <PropertyPageSchema Include="$(XamlPropertyRulesDirectory)VsSDK.XamlPropertyRule.xaml">
+          <Context>File;BrowseObject</Context>
+        </PropertyPageSchema>
+        <PropertyPageSchema Include="$(XamlPropertyRulesDirectory)VsSDK.ProjectItemsSchema.xaml">
+          <Context>Project</Context>
+        </PropertyPageSchema>
+
+        <!-- Project references -->
+        <PropertyPageSchema Include="$(XamlPropertyRulesDirectory)VsSDK.ProjectReference.xaml">
+          <Context>Project;BrowseObject</Context>
+        </PropertyPageSchema>
+
+        <PropertyPageSchema Include="$(XamlPropertyRulesDirectory)VsSDK.ResolvedProjectReference.xaml">
+          <Context>ProjectSubscriptionService;BrowseObject</Context>
+        </PropertyPageSchema>
+        
+      </ItemGroup>
+
+      <Choose>
+        <When Condition="'$(EnableDefaultItems)' == 'true'">
+          <ItemGroup Condition="'$(EnableDefaultItems)' == 'true'">
+            <VSCTCompile Include="**\*.vsct" Namespace="$(RootNamespace)" ResourceName="Menus.ctmenu" />
+            <EmbeddedResource Update="**\*.resx" MergeWithCTO="true" ManifestResourceName="VSPackage"/>
+          </ItemGroup>
+        </When>
+      </Choose>
+
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <AvailableItemName Include="VSCTCompile" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+
+
+  <Target Name="VSIXIdentifierProjectOutputGroup" Condition="'$(CreateVsixContainer)' != 'true'" />
+  <Target Name="VSIXNameProjectOutputGroup" Condition="'$(CreateVsixContainer)' != 'true'" />
+
+
+</Project>

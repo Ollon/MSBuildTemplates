@@ -1,0 +1,120 @@
+﻿<!--
+***********************************************************************************************
+Directory.Build.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (c) $year$ $CompanyName$. All rights reserved. 
+***********************************************************************************************
+-->
+<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+
+  <!--
+        Getting back all of the goodies we lost when Visual Studio switched to the new 'Lighter'
+        Installation. Personally, I don't mind it; however, I did have to barf out this bad boy
+        to make things somewhat similar to what they used to be in VS2015 and older. The property
+        group below merely expands the assembly search paths that msbuild checks when you build 
+        something. It maximizes what you have installed in the most recent installation of visual studio.
+        There will be no NuGet Internet Trickery here! They're your assemblies...Use them when YOU need them...
+        
+        This really helps you out if you are building Visual Studio Extensions. Other than that, 
+        it doesnt really do you any good because you really should be using NuGet Packages for your 
+        dependencies, but who knows for sure. Who can really know anything for sure? What does that
+        even mean?
+  -->
+  <PropertyGroup>
+    <AssemblyFoldersSuffix>AssemblyFoldersEx</AssemblyFoldersSuffix>
+    <FrameworkRegistryBase>Software\Microsoft\.NETFramework</FrameworkRegistryBase>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <ProjectSystemExtensionDir>$(DevEnvDir)CommonExtensions\Microsoft\Project\</ProjectSystemExtensionDir>
+    <NuGetExtensionDir>$(DevEnvDir)CommonExtensions\Microsoft\NuGet\</NuGetExtensionDir>
+    <LanguageServicesDir>$(DevEnvDir)CommonExtensions\Microsoft\ManagedLanguages\VBCSharp\LanguageServices\</LanguageServicesDir>
+    <CommonAssembliesDir>$([System.IO.Path]::GetFullPath('$(DevEnvDir)..\..\VSSDK\VisualStudioIntegration\Common\Assemblies\v4.0\'))</CommonAssembliesDir>
+    <PrivateAssemblies>$(DevEnvDir)PrivateAssemblies\</PrivateAssemblies>
+    <PublicAssemblies>$(DevEnvDir)PublicAssemblies\</PublicAssemblies>
+    <AssemblySearchPaths>
+      $(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\;
+      $(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Roslyn\;
+      $(ProjectSystemExtensionDir);
+      $(NuGetExtensionDir);
+      $(LanguageServicesDir);
+      $(ReferencePath);
+      {CandidateAssemblyFiles};
+      {HintPathFromItem};
+      {TargetFrameworkDirectory};
+      {RawFileName};
+      {GAC};
+      {Registry:$(FrameworkRegistryBase),$(TargetFrameworkVersion),$(AssemblyFoldersSuffix)$(AssemblyFoldersExConditions)};
+      $(DevEnvDir);
+      $(PrivateAssemblies);
+      $(PublicAssemblies);
+      $(CommonAssembliesDir);
+    </AssemblySearchPaths>
+    <DesignTimeAssemblySearchPaths>$(AssemblySearchPaths)</DesignTimeAssemblySearchPaths>
+  </PropertyGroup>
+
+  
+  <!--
+        Because the folks at Redmond took it upon themselves to inject a completely alien and somewhat antagonistic
+        Build/Project system into everyone's build (i.e., if you build C#, VB, C++, etc.) practically overnight and
+        completely without warning, The properties below were born. They effectivly circumvent getting wrangled up in
+        the new Project System not-so-aptly-named 'Roslyn', which every project does, unless they opt out in a fashion
+        similar to the one represented below. 
+        
+        Roslyn....It surely is an expected name, for Microsoft is very well known by this point for being the software 
+        powerhouse with a consistent track record for the girliest, most feminine names this side of the Tampon Isle. 
+        
+        "What?" Microsoft says to you, "You are building a Compiler in C# from the ground up...By hand, in a Fiery Pit? 
+        Don't call it BOZARG 9000! Call it Juliette...or Roslyn." 
+        
+        Puhhhhlease...
+        
+        I shall also note that the new Roslyn Project System strangly boasts something Microsoft calls 'Agnostic' toward
+        Visual Studio. Weird...Well...I mean, you stumble upon it WHILE BUILDING IN VISUAL STUDIO. Of course that's what
+        Agnostic means! Lordy, how could I ever have thought anything different?
+  -->
+  <PropertyGroup>
+
+    <DefineCommonCapabilities>false</DefineCommonCapabilities>
+    <DefineCommonManagedCapabilities>false</DefineCommonManagedCapabilities>
+    <!-- 
+    
+        This one is the key. This is the super secret pathway to the script that funnels you into Roslyn Project System.
+        Do not let whatever value you supply become an actual, real, physical, resolvable file path on your disk.
+        Also, do not make this value an empty string. You will LOOSE the chocolate factory and all of the oompa loompas 
+        and schnozberries, plus the glass elevator and of course your gradpa george and gradma georgina if msbuild runs 
+        something like this: 
+            
+              [System.IO.File]::Exists('$(CSharpDesignTimeTargetsPath)') 
+              
+        and it returns true. 
+    -->
+    <CSharpDesignTimeTargetsPath>XXXX</CSharpDesignTimeTargetsPath>
+
+  </PropertyGroup>
+
+
+
+  <ItemGroup>
+    <PropertyPageSchema Include="$(XamlPropertyRulesDirectory)WPF.ApplicationDefinition.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(XamlPropertyRulesDirectory)WPF.Page.xaml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(XamlPropertyRulesDirectory)WPF.ProjectItemsSchema.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+  </ItemGroup>
+
+
+  <Import Project="Directory.Build.Xaml.targets" />
+  
+</Project>

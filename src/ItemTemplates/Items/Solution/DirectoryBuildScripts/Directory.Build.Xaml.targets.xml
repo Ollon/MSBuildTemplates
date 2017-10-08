@@ -1,0 +1,114 @@
+<!--
+***********************************************************************************************
+Directory.Build.Xaml.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (c) $year$ $CompanyName$. All rights reserved. 
+***********************************************************************************************
+-->
+<Project>
+  
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <GeneratedRootNamespaceFile>$(IntermediateOutputPath)GeneratedRootNamespace$(GeneratedFileExtension)</GeneratedRootNamespaceFile>
+    <GeneratedXmlnsPrefixFile>$(IntermediateOutputPath)GeneratedXmlnsPrefixes$(GeneratedFileExtension)</GeneratedXmlnsPrefixFile>
+    <GeneratedXmlnsDefinitionsFile>$(IntermediateOutputPath)GeneratedXmlnsDefinitions$(GeneratedFileExtension)</GeneratedXmlnsDefinitionsFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>GenerateRootNamespaceFile;GenerateXmlnsDefinitionFile;GenerateXmlnsPrefixFile;$(CoreCompileDependsOn)</CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <XmlnsDefinition>
+      <AssemblyName>$(AssemblyName)</AssemblyName>
+      <Namespace>$(RootNamespace)</Namespace>
+      <Visible>false</Visible>
+    </XmlnsDefinition>
+    <XmlnsPrefix>
+      <Visible>false</Visible>
+    </XmlnsPrefix>
+    <RootNamespace>
+      <Visible>false</Visible>
+    </RootNamespace>
+  </ItemDefinitionGroup>
+
+  <Target Name="GenerateXmlnsDefinitionFile"
+          Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+          Outputs="$(GeneratedXmlnsDefinitionsFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'@(XmlnsDefinition)' != ''">
+    <CreateItem Include="System.Windows.Markup.XmlnsDefinitionAttribute"
+                AdditionalMetadata="
+                _Parameter1=%(XmlnsDefinition.Identity);
+                _Parameter2=%(XmlnsDefinition.Namespace);
+                "
+                Condition="'@(XmlnsDefinition)' != ''">
+      <Output TaskParameter="Include" ItemName="XmlnsDefinitionAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+      AssemblyAttributes="@(XmlnsDefinitionAttribute)"
+      Language="$(Language)"
+      OutputFile="$(GeneratedXmlnsDefinitionsFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+
+  <Target Name="GenerateRootNamespaceFile"
+          Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+          Outputs="$(GeneratedRootNamespaceFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'@(RootNamespace)' != ''">
+    <CreateItem Include="System.Windows.Markup.RootNamespaceAttribute"
+                AdditionalMetadata="_Parameter1=%(RootNamespace.Identity)"
+                Condition="'@(RootNamespace)' != ''">
+      <Output TaskParameter="Include" ItemName="RootNamespaceAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+      AssemblyAttributes="@(RootNamespaceAttribute)"
+      Language="$(Language)"
+      OutputFile="$(GeneratedRootNamespaceFile)"
+      >
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+
+  <Target Name="GenerateXmlnsPrefixFile"
+          Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+          Outputs="$(GeneratedXmlnsPrefixFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'@(XmlnsPrefix)' != ''">
+    <CreateItem Include="System.Windows.Markup.XmlnsPrefixAttribute"
+                AdditionalMetadata="
+                _Parameter1=%(XmlnsPrefix.Identity);
+                _Parameter2=%(XmlnsPrefix.Prefix)
+                "
+                Condition="'@(XmlnsPrefix)' != ''">
+      <Output TaskParameter="Include" ItemName="XmlnsPrefixAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+      AssemblyAttributes="@(XmlnsPrefixAttribute)"
+      Language="$(Language)"
+      OutputFile="$(GeneratedXmlnsPrefixFile)"
+      >
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+  
+</Project>

@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--  Copyright, Microsoft Corporation, All rights reserved.  -->
+<Rule
+    xmlns="http://schemas.microsoft.com/build/2009/properties"
+    Name="Page"
+    Description="XAML Page Properties"
+    DisplayName="XAML Page Properties"
+    PageTemplate="generic"
+    PropertyPagesHidden="False">
+
+    <Rule.DataSource>
+        <DataSource
+            HasConfigurationCondition="false"
+            ItemType="Page"
+            Persistence="ProjectFile" />
+    </Rule.DataSource>
+
+    <Rule.Categories>
+        <Category Name="Advanced" DisplayName="Advanced" />
+        <Category Name="Misc" DisplayName="Misc" />
+    </Rule.Categories>
+
+    <DynamicEnumProperty
+        Name="{}{ItemType}"
+        Category="Advanced"
+        Description="How the file relates to the build and deployment processes."
+        DisplayName="Build Action"
+        EnumProvider="ItemTypes" />
+
+    <EnumProperty
+        Name="CopyToOutputDirectory"
+        Category="Advanced"
+        Description="Specifies the source file will be copied to the output directory."
+        DisplayName="Copy to Output Directory">
+        <EnumValue Name="Never" DisplayName="Do not copy" />
+        <EnumValue Name="Always" DisplayName="Copy always" />
+        <EnumValue Name="PreserveNewest" DisplayName="Copy if newer" />
+    </EnumProperty>
+
+    <BoolProperty
+        Name="Pack"
+        Category="NuGet Packaging"
+        Description="Should the build process pack this file when building nuget packages?"
+        DisplayName="Include in NuGet Package" />
+    <StringProperty
+        Name="PackagePath"
+        Category="NuGet Packaging"
+        Description="Path to lay the file in the resulting NuGet Package"
+        DisplayName="Package Path">
+        <StringProperty.ValueEditors>
+            <ValueEditor DisplayName="&lt;Edit...&gt;" EditorType="DefaultStringPropertyEditor" />
+        </StringProperty.ValueEditors>
+    </StringProperty>
+
+
+    <StringProperty
+        Name="Generator"
+        Category="Advanced"
+        Description="DTE Property for accessing the Generator property."
+        DisplayName="Custom Tool"
+        Visible="True">
+        <StringProperty.ValueEditors>
+            <ValueEditor DisplayName="&lt;Edit...&gt;" EditorType="DefaultStringPropertyEditor" />
+        </StringProperty.ValueEditors>
+    </StringProperty>
+
+    <StringProperty
+        Name="CustomToolNamespace"
+        Category="Advanced"
+        Description="The namespace into which the output of the custom tool is placed."
+        DisplayName="Custom Tool Namespace">
+        <StringProperty.ValueEditors>
+            <ValueEditor DisplayName="&lt;Edit...&gt;" EditorType="DefaultStringPropertyEditor" />
+        </StringProperty.ValueEditors>
+    </StringProperty>
+
+    <StringProperty
+        Name="Identity"
+        Category="Misc"
+        Description="The item specified in the Include attribute."
+        ReadOnly="true"
+        Visible="false">
+        <StringProperty.DataSource>
+            <DataSource
+                ItemType="Page"
+                PersistedName="Identity"
+                Persistence="Intrinsic"
+                SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty
+        Name="FullPath"
+        Category="Misc"
+        Description="Location of the file."
+        DisplayName="Full Path"
+        ReadOnly="true">
+        <StringProperty.DataSource>
+            <DataSource
+                ItemType="Page"
+                PersistedName="FullPath"
+                Persistence="Intrinsic"
+                SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty
+        Name="FileNameAndExtension"
+        Category="Misc"
+        Description="Name of the file or folder."
+        DisplayName="File Name"
+        ReadOnly="true">
+        <StringProperty.DataSource>
+            <DataSource
+                ItemType="Page"
+                PersistedName="FileNameAndExtension"
+                Persistence="Intrinsic"
+                SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty
+        Name="URL"
+        ReadOnly="true"
+        Visible="false">
+        <StringProperty.DataSource>
+            <DataSource
+                ItemType="Page"
+                PersistedName="FullPath"
+                Persistence="Intrinsic"
+                SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <BoolProperty Name="Visible" Visible="false" />
+    <StringProperty Name="DependentUpon" Visible="false" />
+    <StringProperty Name="Link" Visible="false">
+        <StringProperty.DataSource>
+            <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+  <EnumProperty Name="SubType" Visible="false">
+    <EnumValue Name="Designer" />
+    <EnumValue Name="Component" />
+    <EnumValue Name="Control" />
+    <EnumValue Name="Form" />
+    <EnumValue Name="Code" />
+  </EnumProperty>
+    <StringProperty
+        Name="Extension"
+        ReadOnly="true"
+        Visible="False">
+        <StringProperty.DataSource>
+            <DataSource
+                ItemType="Page"
+                PersistedName="Extension"
+                Persistence="Intrinsic"
+                SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <StringProperty
+        Name="LastGenOutput"
+        Description="The filename of the last file generated as a result of the SFG."
+        Visible="false" />
+    <BoolProperty
+        Name="DesignTime"
+        Description="A value indicating whether this file has a designer."
+        Visible="false" />
+    <BoolProperty
+        Name="AutoGen"
+        Description="A value indicating whether this is a generated file."
+        Visible="false" />
+</Rule>

@@ -1,0 +1,75 @@
+﻿<!--
+***********************************************************************************************
+Directory.Build.Assembly.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (c) 2017 Ollon, LLC. All rights reserved. 
+***********************************************************************************************
+-->
+<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <GeneratedAssemblyInfoFile>$(IntermediateOutputPath)GeneratedAssemblyInfo_$(BuildVersion)$(GeneratedFileExtension)</GeneratedAssemblyInfoFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyTitleAttribute">
+      <_Parameter1>$(AssemblyName)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyCompanyAttribute">
+      <_Parameter1>$(Company)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyCopyrightAttribute">
+      <_Parameter1>$(Copyright)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyProductAttribute">
+      <_Parameter1>$(AssemblyName)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyDescriptionAttribute">
+      <_Parameter1>$(AssemblyName)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyVersionAttribute">
+      <_Parameter1>$(AssemblyVersion)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyFileVersionAttribute">
+      <_Parameter1>$(BuildVersion)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyInformationalVersionAttribute">
+      <_Parameter1>$(BuildVersion). PublicKeyToken: $(PublicKeyToken)</_Parameter1>
+    </AssemblyVersionAttribute>
+  </ItemGroup>
+
+
+
+  <Target Name="GenerateAssemblyInfoFile"
+          Inputs="$(MSBuildThisFileFullPath)"
+          Outputs="$(GeneratedAssemblyInfoFile)"
+          DependsOnTargets="PrepareForBuild"
+          >
+
+    <WriteCodeFragment
+        AssemblyAttributes="@(AssemblyVersionAttribute)"
+        Language="$(Language)"
+        OutputFile="$(GeneratedAssemblyInfoFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+  </Target>
+
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>
+      GenerateAssemblyInfoFile;
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
+  </PropertyGroup>
+
+</Project>

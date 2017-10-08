@@ -1,0 +1,78 @@
+﻿<ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+
+    <ContentType
+        Name="EmbeddedResource"
+        DisplayName="EmbeddedResource"
+        ItemType="EmbeddedResource">
+        <ContentType.Metadata>
+            <NameValuePair Name="DefaultMetadata_MergeWithCTO" Value="True" />
+            <NameValuePair Name="DefaultMetadata_ManifestResourceName" Value="VSPackage" />
+        </ContentType.Metadata>
+    </ContentType>
+
+    <ContentType
+        Name="CommandTable"
+        DefaultContentTypeForItemType="True"
+        DisplayName="Visual Studio Command Table"
+        ItemGroupName="VSIX"
+        ItemType="VSCTCompile">
+        <ContentType.Metadata>
+            <NameValuePair Name="DefaultMetadata_SubType" Value="Designer" />
+            <NameValuePair Name="DefaultMetadata_ResourceName" Value="Menus.ctmenu" />
+        </ContentType.Metadata>
+    </ContentType>
+
+
+    <ContentType
+        Name="VSTemplate"
+        DefaultContentTypeForItemType="True"
+        DisplayName="Visual Studio Template"
+        ItemGroupName="VSIX"
+        ItemType="VSTemplate">
+        <ContentType.Metadata>
+            <NameValuePair Name="DefaultMetadata_SubType" Value="Designer" />
+        </ContentType.Metadata>
+    </ContentType>
+
+
+    <ContentType
+        Name="XamlPropertyRule"
+        DefaultContentTypeForItemType="True"
+        DisplayName="XAML Property Rule"
+        ItemGroupName="VSIX"
+        ItemType="XamlPropertyRule">
+        <ContentType.Metadata>
+            <NameValuePair Name="DefaultMetadata_Generator" Value="MSBuild:GenerateRuleSourceFromXaml" />
+        </ContentType.Metadata>
+    </ContentType>
+    <ContentType
+        Name="PackageDefinition"
+        DisplayName="Package Definition File"
+        ItemGroupName="VSIX"
+        ItemType="Content" />
+    <ContentType
+        Name="VsixManifest"
+        DisplayName="Vsix Manifest"
+        ItemGroupName="VSIX"
+        ItemType="None" />
+    <ItemType
+        Name="VSTemplate"
+        DefaultContentType="VSTemplate"
+        DisplayName="Visual Studio Template"
+        UpToDateCheckInput="True" />
+    <ItemType
+        Name="VSCTCompile"
+        DefaultContentType="CommandTable"
+        DisplayName="Visual Studio Command Table"
+        UpToDateCheckInput="True" />
+    <ItemType
+        Name="XamlPropertyRule"
+        DefaultContentType="XamlPropertyRule"
+        DisplayName="XAML Property Rule" />
+    <FileExtension Name=".vstemplate" ContentType="VSTemplate" />
+    <FileExtension Name=".pkgdef" ContentType="PackageDefinition" />
+    <FileExtension Name=".vsct" ContentType="CommandTable" />
+    <FileExtension Name=".vsixmanifest" ContentType="VsixManifest" />
+
+</ProjectSchemaDefinitions>

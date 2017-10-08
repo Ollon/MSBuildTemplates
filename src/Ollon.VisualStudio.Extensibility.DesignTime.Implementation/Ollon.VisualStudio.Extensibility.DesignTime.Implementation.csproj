@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IncludeVSPackageReferences>true</IncludeVSPackageReferences>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6ED1EA66-1B45-4CF1-B732-935675DB7EF9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ollon.VisualStudio</RootNamespace>
+    <AssemblyName>Ollon.VisualStudio.Extensibility.DesignTime.Implementation</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Extensibility\Implementation\Interop\MonitorSelection.cs" />
+    <Compile Include="Extensibility\Implementation\Interop\VsEnvDTE.cs" />
+    <Compile Include="Extensibility\Implementation\Interop\VsEnvDTE2.cs" />
+    <Compile Include="Extensibility\Implementation\Interop\VsSolution.cs" />
+    <Compile Include="Extensibility\Implementation\Interop\VsSolution2.cs" />
+    <Compile Include="Extensibility\Implementation\Interop\VsSolution3.cs" />
+    <Compile Include="Extensibility\Implementation\Interop\VsSolution4.cs" />
+    <Compile Include="Extensibility\Implementation\Interop\VsSolution5.cs" />
+    <Compile Include="Extensibility\Implementation\Services\DirectoryBuildPropsWriter.cs" />
+    <Compile Include="Extensibility\Implementation\Services\MSBuildOutputService.cs" />
+    <Compile Include="Extensibility\Implementation\Services\MSBuildProjectCollection.cs" />
+    <Compile Include="Extensibility\Implementation\Services\MSBuildProjectLoader.cs" />
+    <Compile Include="Extensibility\Implementation\Services\ProjectXmlService.cs" />
+    <Compile Include="Extensibility\Implementation\Services\StrongNameKeyGenerator.cs" />
+    <Compile Include="Extensibility\Implementation\Services\VsMonitorSelectionService.cs" />
+    <Compile Include="Extensibility\Implementation\Services\VsNewSolutionDialogService.cs" />
+    <Compile Include="Extensibility\Implementation\Services\VsRuleSetWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ollon.VisualStudio.Extensibility.DesignTime.Dialogs\Ollon.VisualStudio.Extensibility.DesignTime.Dialogs.csproj">
+      <Project>{c1cbd59f-bb69-4cf3-bc85-fab58729bd56}</Project>
+      <Name>Ollon.VisualStudio.Extensibility.DesignTime.Dialogs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ollon.VisualStudio.Extensibility.DesignTime\Ollon.VisualStudio.Extensibility.DesignTime.csproj">
+      <Project>{36d25d82-504b-4fde-be0d-d71cfb46a038}</Project>
+      <Name>Ollon.VisualStudio.Extensibility.DesignTime</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>10.0.3</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!--<Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />-->
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

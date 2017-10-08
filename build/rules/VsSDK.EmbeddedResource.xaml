@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--  Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.  -->
+<Rule
+    xmlns="http://schemas.microsoft.com/build/2009/properties"
+    Name="EmbeddedResource"
+    Description="Embedded resource"
+    DisplayName="Embedded Resource"
+    OverrideMode="Extend"
+    PageTemplate="generic">
+    <Rule.DataSource>
+        <DataSource
+            HasConfigurationCondition="False"
+            ItemType="EmbeddedResource"
+            Persistence="ProjectFile"
+            SourceOfDefaultValue="AfterContext" />
+    </Rule.DataSource>
+
+
+    <StringProperty
+        Name="ManifestResourceName"
+        Category="VSIX"
+        Description="The name used to access the embedded respource at runtime."
+        DisplayName="ManifestResourceName" />
+
+    <BoolProperty
+        Name="MergeWithCTO"
+        Category="VSIX"
+        Description="This property states whether or not to merge the embedded resources in the package with the command table. You want to choose True, trust me."
+        DisplayName="MergewithCTO" />
+</Rule>

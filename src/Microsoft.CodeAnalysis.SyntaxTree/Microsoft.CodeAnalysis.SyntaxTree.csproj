@@ -1,0 +1,66 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <EnableDefaultItems>true</EnableDefaultItems>
+    <IncludeCoreReferences>true</IncludeCoreReferences>
+  </PropertyGroup>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+
+
+
+  <PropertyGroup>
+    <TargetFramework>net47</TargetFramework>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>Microsoft.CodeAnalysis</RootNamespace>
+    <DefineConstants>TRACE;DEBUG;NET47;COMPILERCORE</DefineConstants>
+  </PropertyGroup>
+
+
+
+  <PropertyGroup>
+    <DefineConstants>TRACE;DEBUG;NET47;COMPILERCORE</DefineConstants>
+  </PropertyGroup>
+
+
+
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
+
+
+
+  <ItemGroup>
+    <PackageReference Include="System.Collections.Immutable" Version="1.4.0" />
+    <PackageReference Include="System.Reflection.Metadata" Version="1.5.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
+  </ItemGroup>
+
+
+
+
+  <ItemGroup>
+    <Reference Include="System.Numerics" />
+  </ItemGroup>
+
+
+
+
+  <ItemGroup>
+    <Compile Update="CodeAnalysisResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodeAnalysisResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+
+
+
+  <ItemGroup>
+    <EmbeddedResource Update="CodeAnalysisResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CodeAnalysisResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

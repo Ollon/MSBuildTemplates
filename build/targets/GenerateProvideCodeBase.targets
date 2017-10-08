@@ -1,0 +1,54 @@
+﻿<!--
+***********************************************************************************************
+Directory.Build.Assembly.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (c) 2017 Ollon, LLC. All rights reserved. 
+***********************************************************************************************
+-->
+<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <GeneratedProvideCodeBaseFile>$(IntermediateOutputPath)GeneratedProvideCodeBase(GeneratedFileExtension)</GeneratedProvideCodeBaseFile>
+  </PropertyGroup>
+
+
+  <Target Name="GenerateProvideCodeBaseFile"
+          Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+          Outputs="$(GeneratedProvideCodeBaseFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'$(ProvideCodeBase)' == 'true'">
+
+    <CreateItem Include="Microsoft.VisualStudio.Shell.ProvideCodeBaseAttribute">
+      <Output TaskParameter="Include" ItemName="ProvideCodeBaseAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+      AssemblyAttributes="@(ProvideCodeBaseAttribute)"
+      Language="$(Language)"
+      OutputFile="$(GeneratedProvideCodeBaseFile)"
+      Condition="'$(ProvideCodeBase)' == 'true'">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+
+
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>
+      GenerateProvideCodeBaseFile;
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,28 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageOutputPath Condition="'$(PackageOutputPath)' == ''">$(OutputPath)nuget\</PackageOutputPath>
+    <NoPackageAnalysis Condition="'$(NoPackageAnalysis)' == ''">true</NoPackageAnalysis>
+    <GeneratePackageOnBuild Condition="'$(GeneratePackageOnBuild)' == ''">false</GeneratePackageOnBuild>
+    <IncludeBuildOutput Condition="'$(IncludeBuildOutput)' == ''">true</IncludeBuildOutput>
+    <CopyLocalLockFileAssemblies Condition="'$(CopyLocalLockFileAssemblies)' == ''">true</CopyLocalLockFileAssemblies>
+    <Company Condition="'$(Company)'==''">$(AssemblyCompany)</Company>
+    <Copyright Condition="'$(Copyright)'==''">$(AssemblyCopyright)</Copyright>
+    <Description Condition="'$(Description)'==''">$(AssemblyDescription)</Description>
+    <Product Condition="'$(Product)'==''">$(AssemblyProduct)</Product>
+    <NetralLanguage Condition="'$(NetralLanguage)'==''">en-US</NetralLanguage>
+    <PackageVersion Condition="'$(PackageVersion)' == ''">$(AssemblyVersion)</PackageVersion>
+    <InformationalVersion Condition="'$(InformationalVersion)' == ''">$(AssemblyInformationalVersion)</InformationalVersion>
+    <AssemblyFileVersion Condition="'$(AssemblyFileVersion)' == ''">$(AssemblyFileVersion)</AssemblyFileVersion>
+    <PackageReleaseNotes Condition="'$(PackageReleaseNotes)' == ''">$(AssemblyName)</PackageReleaseNotes>
+    <PackageProjectUrl Condition="'$(PackageProjectUrl)' == ''">https://aka.ms/vsextensibility</PackageProjectUrl>
+    <PackageLicenseUrl Condition="'$(PackageLicenseUrl)' == ''">https://aka.ms/pexunj</PackageLicenseUrl>
+    <PackageIconUrl Condition="'$(PackageIconUrl)' == ''">https://aka.ms/vsextensibilityicon</PackageIconUrl>
+    <PackageRequireLicenseAcceptance Condition="'$(PackageRequireLicenseAcceptance)' == ''">true</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+</Project>

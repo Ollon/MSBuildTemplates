@@ -1,0 +1,154 @@
+﻿<!--
+***********************************************************************************************
+Directory.Build.Targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (c) $year$ $CompanyName$. All rights reserved. 
+***********************************************************************************************
+-->
+<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <!--
+        Versions
+  -->
+  <PropertyGroup>
+    <VisualStudioVersion>15.0</VisualStudioVersion>
+    <MinimumVisualStudioVersion>$(VisualStudioVersion)</MinimumVisualStudioVersion>
+    <VisualStudioVersionMajor Condition="'$(VisualStudioVersionMajor)' == ''">15</VisualStudioVersionMajor>
+    <VisualStudioVersionMinor Condition="'$(VisualStudioVersionMinor)' == ''">3</VisualStudioVersionMinor>
+    <BuildNumber>2</BuildNumber>
+    <BuildVersion>$(VisualStudioVersionMajor).$(VisualStudioVersionMinor).$(BuildNumber).0</BuildVersion>
+    <AssemblyBuildVersion>$(BuildVersion)</AssemblyBuildVersion>
+  </PropertyGroup>
+
+  
+  <!--
+        Outputs
+  -->
+  <PropertyGroup>
+    <SolutionDir>$(MSBuildThisFileDirectory)</SolutionDir>
+    <OutputPath>$(SolutionDir)..\bin\$(Configuration)\$(MSBuildProjectName)\</OutputPath>
+    <BaseIntermediateOutputPath>$(SolutionDir)..\bin\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  
+ <!--
+        CommandLine 
+ -->
+  <Choose>
+    <When Condition="'$(DevEnvDir)' == '*Undefined*' OR '$(DevEnvDir)' == ''">
+      <PropertyGroup>
+        <VSInstall>$([MSBuild]::GetRegistryValue(`HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\VisualStudio\SxS\VS7`, `$(VisualStudioVersion)`))\</VSInstall>
+        <DevEnvDir>$(VSInstall)Common7\IDE\</DevEnvDir>
+        <MSBuildDir>$(VSInstall)MSBuild\$(VisualStudioVersion)\Bin\</MSBuildDir>
+        <VsSDKInstall>$(VSInstall)VSSDK\</VsSDKInstall>
+        <Assemblies40>$(VsSDKInstall)VSSDK\VisualStudioIntegration\Common\Assemblies\v4.0\</Assemblies40>
+        <PropertyPageBase>$(VsSDKInstall)VisualStudioIntegration\Common\Source\CSharp\PropertyPageBase\</PropertyPageBase>
+      </PropertyGroup>
+    </When>
+  </Choose>
+  
+  <!--
+        Paths
+  -->
+  <PropertyGroup>
+    <XamlPropertyRulesDirectory>$(MSBuildThisFileDirectory)Rules\</XamlPropertyRulesDirectory>
+  </PropertyGroup>
+  
+  <!--
+        Compiler
+  -->
+  <PropertyGroup>
+    <UseCommonOutputDirectory Condition="'$(UseCommonOutputDirectory)' == ''">true</UseCommonOutputDirectory>
+    <WindowsAppContainer Condition="'$(WindowsAppContainer)' == ''">false</WindowsAppContainer>
+    <UseSharedCompilation Condition="'$(UseSharedCompilation)' == ''">true</UseSharedCompilation>
+  </PropertyGroup>
+
+  <!--
+        Configuration 
+  -->
+  <PropertyGroup>
+    <AllowUnsafeBlocks Condition="'$(AllowUnsafeBlocks)' == ''">true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == ''">false</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)..\build\rulesets\SolutionRules.ruleset</CodeAnalysisRuleSet>
+    <TargetFramework Condition="'$(TargetFramework)' == ''">net47</TargetFramework>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
+    <SignAssembly Condition="'$(SignAssembly)' == ''">false</SignAssembly>
+    <AssemblyOriginatorKeyFile Condition="'$(AssemblyOriginatorKeyFile)' == ''">$(MSBuildThisFileDirectory)..\build\strong name keys\$(SolutionName)SharedKey.snk</AssemblyOriginatorKeyFile>
+    <GeneratePkgDefFile Condition="'$(GeneratePkgDefFile)' == ''">false</GeneratePkgDefFile>
+    <DeployExtension Condition="'$(DeployExtension)' == ''">false</DeployExtension>
+    <DeployVSTemplates Condition="'$(DeployVSTemplates)' == ''">false</DeployVSTemplates>
+    <UseCodebase Condition="'$(UseCodebase)' == ''">false</UseCodebase>
+    <CreateVsixContainer Condition="'$(CreateVsixContainer)' == ''">false</CreateVsixContainer>
+    <!--<DocumentationFile>$(OutputPath)$(MSBuildProjectName).xml</DocumentationFile>-->
+    <AutogenerateBindingRedirects Condition="'$(AutogenerateBindingRedirects)' == ''">true</AutogenerateBindingRedirects>
+    <DisableImplicitFrameworkReferences Condition="'$(DisableImplicitFrameworkReferences)' == ''">true</DisableImplicitFrameworkReferences>
+    <AppendTargetFrameworkToOutputPath Condition="'$(AppendTargetFrameworkToOutputPath)' == ''">false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+
+  <!--
+        NuGet Pack
+  -->
+  <PropertyGroup>
+    <NuGetRepositoryDirectory Condition="'$(NuGetRepositoryDirectory)' == ''">$(SolutionDir)..\bin\nuget\</NuGetRepositoryDirectory>
+    <PackageOutputPath Condition="'$(PackageOutputPath)' == ''">$(OutputPath)nuget\</PackageOutputPath>
+    <NoPackageAnalysis Condition="'$(NoPackageAnalysis)' == ''">true</NoPackageAnalysis>
+    <GeneratePackageOnBuild Condition="'$(GeneratePackageOnBuild)' == ''">false</GeneratePackageOnBuild>
+    <IncludeBuildOutput Condition="'$(IncludeBuildOutput)' == ''">true</IncludeBuildOutput>
+    <CopyLocalLockFileAssemblies Condition="'$(CopyLocalLockFileAssemblies)' == ''">true</CopyLocalLockFileAssemblies>
+    <Company Condition="'$(Company)'==''">Ollon, LLC</Company>
+    <Copyright Condition="'$(Copyright)'==''">© 2017 Ollon, LLC. All Rights Reserved.</Copyright>
+    <Description Condition="'$(Description)'==''">$(AssemblyName)</Description>
+    <Product Condition="'$(Product)'==''">$(AssemblyName)</Product>
+    <AssemblyTitle Condition="'$(AssemblyTitle)'==''">$(AssemblyName)</AssemblyTitle>
+    <NetralLanguage Condition="'$(NetralLanguage)'==''">en-US</NetralLanguage>
+    <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">$(AssemblyBuildVersion)</AssemblyVersion>
+    <PackageVersion Condition="'$(PackageVersion)' == ''">$(AssemblyBuildVersion)</PackageVersion>
+    <InformationalVersion Condition="'$(InformationalVersion)' == ''">$(AssemblyBuildVersion)</InformationalVersion>
+    <AssemblyFileVersion Condition="'$(AssemblyFileVersion)' == ''">$(VisualStudioVersion).0.0.0</AssemblyFileVersion>
+    <PackageReleaseNotes Condition="'$(PackageReleaseNotes)' == ''">$(MSBuildProjectName)</PackageReleaseNotes>
+    <PackageProjectUrl Condition="'$(PackageProjectUrl)' == ''">https://aka.ms/vsextensibility</PackageProjectUrl>
+    <PackageLicenseUrl Condition="'$(PackageLicenseUrl)' == ''">https://aka.ms/pexunj</PackageLicenseUrl>
+    <PackageIconUrl Condition="'$(PackageIconUrl)' == ''">https://aka.ms/vsextensibilityicon</PackageIconUrl>
+    <PackageRequireLicenseAcceptance Condition="'$(PackageRequireLicenseAcceptance)' == ''">true</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+  
+  <!--
+        Target Prep
+  --><!--
+  <PropertyGroup>
+    <XamlRuleToCodeRuleBaseTypes Condition="'$(XamlRuleToCodeRuleBaseTypes)' == ''"></XamlRuleToCodeRuleBaseTypes>
+    <XamlRuleToCodeGenerator Condition="'$(XamlRuleToCodeGenerator)' == ''">MSBuild:GenerateRuleSourceFromXaml</XamlRuleToCodeGenerator>
+    <XamlRuleToCodeOutputDirectory Condition="'$(XamlRuleToCodeOutputDirectory)' == ''">$(IntermediateOutputPath)</XamlRuleToCodeOutputDirectory>
+    <XamlRuleToCodeCreateFallBackRule Condition="'$(XamlRuleToCodeCreateFallBackRule)' == ''">true</XamlRuleToCodeCreateFallBackRule>
+    <XamlRuleToCodeNamespace Condition="'$(XamlRuleToCodeNamespace)' == ''">$(RootNamespace)</XamlRuleToCodeNamespace>
+    <XamlRuleToCodeDataAccess Condition="'$(XamlRuleToCodeDataAccess)' == ''">IRule</XamlRuleToCodeDataAccess>
+    <XamlRuleToCodeRuleInjection Condition="'$(XamlRuleToCodeRuleInjection)' == ''">ProjectLevel</XamlRuleToCodeRuleInjection>
+    <XamlRuleToCodeRuleInjectionCatalog Condition="'$(XamlRuleToCodeRuleInjectionCatalog)' == ''">Project</XamlRuleToCodeRuleInjectionCatalog>
+    <XamlRuleToCodeRuleInjectionClassName Condition="'$(XamlRuleToCodeRuleInjectionClassName)' == ''">ProjectProperties</XamlRuleToCodeRuleInjectionClassName>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <XamlPropertyRule>
+      <Namespace>$(XamlRuleToCodeNamespace)</Namespace>
+      --><!--<RuleBaseTypes>$(XamlRuleToCodeRuleBaseTypes)</RuleBaseTypes>--><!--
+      <Generator>$(XamlRuleToCodeGenerator)</Generator>
+      <CreateFallbackRule>$(XamlRuleToCodeCreateFallbackRule)</CreateFallbackRule>
+      <OutputDirectory>$(XamlRuleToCodeOutputDirectory)</OutputDirectory>
+      <DataAccess>$(XamlRuleToCodeDataAccess)</DataAccess>
+      <RuleInjection>$(XamlRuleToCodeRuleInjection)</RuleInjection>
+      <RuleInjectionCatalog>$(XamlRuleToCodeRuleInjectionCatalog)</RuleInjectionCatalog>
+      <RuleInjectionClassName>$(XamlRuleToCodeRuleInjectionClassName)</RuleInjectionClassName>
+    </XamlPropertyRule>
+  </ItemDefinitionGroup>-->
+  
+</Project>

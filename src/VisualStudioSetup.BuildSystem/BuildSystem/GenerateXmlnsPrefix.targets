@@ -1,0 +1,239 @@
+﻿<!--
+***********************************************************************************************
+Directory.Build.Assembly.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (c) 2017 Ollon, LLC. All rights reserved. 
+***********************************************************************************************
+-->
+<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <InternalsVisibleToSuffix>, PublicKey=$(PublicKey)</InternalsVisibleToSuffix>
+    <GeneratedInternalsVisibleToFile>$(IntermediateOutputPath)GeneratedInternalsVisibleTo$(GeneratedFileExtension)</GeneratedInternalsVisibleToFile>
+    <GeneratedAssemblyInfoFile>$(IntermediateOutputPath)GeneratedAssemblyInfo_$(BuildVersion)$(GeneratedFileExtension)</GeneratedAssemblyInfoFile>
+    <GeneratedRootNamespaceFile>$(IntermediateOutputPath)GeneratedRootNamespace$(GeneratedFileExtension)</GeneratedRootNamespaceFile>
+    <GeneratedXmlnsPrefixFile>$(IntermediateOutputPath)GeneratedXmlnsPrefixes$(GeneratedFileExtension)</GeneratedXmlnsPrefixFile>
+    <GeneratedXmlnsDefinitionsFile>$(IntermediateOutputPath)GeneratedXmlnsDefinitions$(GeneratedFileExtension)</GeneratedXmlnsDefinitionsFile>
+  </PropertyGroup>
+
+
+
+
+  <ItemDefinitionGroup>
+    <InternalsVisibleTo>
+      <Visible>false</Visible>
+    </InternalsVisibleTo>
+    <XmlnsDefinition>
+      <AssemblyName>$(AssemblyName)</AssemblyName>
+      <Namespace>$(RootNamespace)</Namespace>
+      <Visible>false</Visible>
+    </XmlnsDefinition>
+    <XmlnsPrefix>
+      <Visible>false</Visible>
+    </XmlnsPrefix>
+    <RootNamespace>
+      <Visible>false</Visible>
+    </RootNamespace>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyTitleAttribute">
+      <_Parameter1>$(AssemblyName)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyCompanyAttribute">
+      <_Parameter1>$(Company)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyCopyrightAttribute">
+      <_Parameter1>$(Copyright)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyProductAttribute">
+      <_Parameter1>$(AssemblyName)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyDescriptionAttribute">
+      <_Parameter1>$(AssemblyName)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyVersionAttribute">
+      <_Parameter1>$(AssemblyVersion)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyFileVersionAttribute">
+      <_Parameter1>$(BuildVersion)</_Parameter1>
+    </AssemblyVersionAttribute>
+    <AssemblyVersionAttribute Include="System.Reflection.AssemblyInformationalVersionAttribute">
+      <_Parameter1>$(BuildVersion). Commit Hash: $(GitHeadSha)</_Parameter1>
+    </AssemblyVersionAttribute>
+  </ItemGroup>
+
+
+
+  <Target Name="GenerateAssemblyInfoFile"
+          Inputs="$(MSBuildThisFileFullPath)"
+          Outputs="$(GeneratedAssemblyInfoFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'$(AutoGenerateAssemblyInfo)' == 'true'">
+
+    <WriteCodeFragment
+        AssemblyAttributes="@(AssemblyVersionAttribute)"
+        Language="$(Language)"
+        OutputFile="$(GeneratedAssemblyInfoFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+  </Target>
+
+
+  <Target Name="GenerateInternalsVisibleToFile"
+          Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+          Outputs="$(GeneratedInternalsVisibleToFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'@(InternalsVisibleTo)' != ''">
+    <CreateItem Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute"
+                AdditionalMetadata="_Parameter1=%(InternalsVisibleTo.Identity)$(InternalsVisibleToSuffix)"
+                Condition="'@(InternalsVisibleTo)' != ''">
+      <Output TaskParameter="Include" ItemName="InternalsVisibleToAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+        AssemblyAttributes="@(InternalsVisibleToAttribute)"
+        Language="$(Language)"
+        OutputFile="$(GeneratedInternalsVisibleToFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+
+
+  <Target Name="GenerateProvideBindingRedirectionFile"
+          Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+          Outputs="$(GeneratedProvideBindingRedirectionFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'$(ProvideBindingRedirection)' == 'true'">
+    
+    <CreateItem Include="Microsoft.VisualStudio.Shell.ProvideBindingRedirectionAttribute">
+      <Output TaskParameter="Include" ItemName="ProvideBindingRedirectionAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+      AssemblyAttributes="@(ProvideBindingRedirectionAttribute)"
+      Language="$(Language)"
+      OutputFile="$(GeneratedProvideBindingRedirectionFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+
+
+  <Target Name="GenerateProvideCodeBaseFile"
+          Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+          Outputs="$(GeneratedProvideCodeBaseFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'$(ProvideCodeBase)' == 'true'">
+    
+    <CreateItem Include="Microsoft.VisualStudio.Shell.ProvideCodeBaseAttribute">
+      <Output TaskParameter="Include" ItemName="ProvideCodeBaseAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+      AssemblyAttributes="@(ProvideCodeBaseAttribute)"
+      Language="$(Language)"
+      OutputFile="$(GeneratedProvideCodeBaseFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+
+  <Target Name="GenerateXmlnsDefinitionFile"
+        Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+        Outputs="$(GeneratedXmlnsDefinitionsFile)"
+        DependsOnTargets="PrepareForBuild"
+        Condition="'@(XmlnsDefinition)' != ''">
+    <CreateItem Include="System.Windows.Markup.XmlnsDefinitionAttribute"
+                AdditionalMetadata="
+                _Parameter1=%(XmlnsDefinition.Identity);
+                _Parameter2=%(XmlnsDefinition.Namespace);
+                "
+                Condition="'@(XmlnsDefinition)' != ''">
+      <Output TaskParameter="Include" ItemName="XmlnsDefinitionAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+      AssemblyAttributes="@(XmlnsDefinitionAttribute)"
+      Language="$(Language)"
+      OutputFile="$(GeneratedXmlnsDefinitionsFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+
+  <Target Name="GenerateRootNamespaceFile"
+          Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+          Outputs="$(GeneratedRootNamespaceFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'@(RootNamespace)' != ''">
+    <CreateItem Include="System.Windows.Markup.RootNamespaceAttribute"
+                AdditionalMetadata="_Parameter1=%(RootNamespace.Identity)"
+                Condition="'@(RootNamespace)' != ''">
+      <Output TaskParameter="Include" ItemName="RootNamespaceAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+      AssemblyAttributes="@(RootNamespaceAttribute)"
+      Language="$(Language)"
+      OutputFile="$(GeneratedRootNamespaceFile)"
+      >
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+
+  <Target Name="GenerateXmlnsPrefixFile"
+          Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+          Outputs="$(GeneratedXmlnsPrefixFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'@(XmlnsPrefix)' != ''">
+    <CreateItem Include="System.Windows.Markup.XmlnsPrefixAttribute"
+                AdditionalMetadata="
+                _Parameter1=%(XmlnsPrefix.Identity);
+                _Parameter2=%(XmlnsPrefix.Prefix)
+                "
+                Condition="'@(XmlnsPrefix)' != ''">
+      <Output TaskParameter="Include" ItemName="XmlnsPrefixAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+      AssemblyAttributes="@(XmlnsPrefixAttribute)"
+      Language="$(Language)"
+      OutputFile="$(GeneratedXmlnsPrefixFile)"
+      >
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>
+      GenerateRootNamespaceFile;
+      GenerateXmlnsDefinitionFile;
+      GenerateXmlnsPrefixFile;
+      GenerateInternalsVisibleToFile;
+      GenerateAssemblyInfoFile;
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
+  </PropertyGroup>
+
+</Project>

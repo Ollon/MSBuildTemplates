@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="b53f081f-00dd-4405-8e7b-18d7bc5923f9" Version="1.0" Language="en-US" Publisher="Ollon, LLC" />
+        <DisplayName>DesignTime Extensions</DisplayName>
+        <Description xml:space="preserve">Additional menu commands and project templates for Visual Studio</Description>
+        <MoreInfo>https://github.com/Ollon/MSBuildTemplates</MoreInfo>
+        <License>Resources\License.txt</License>
+        <Icon>Resources\BuildDefinition.png</Icon>
+        <PreviewImage>Resources\BuildSelection.png</PreviewImage>
+        <Tags>DesignTime, Templates, ItemTemplate</Tags>
+    </Metadata>
+    <Installation AllUsers="true">
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0]" />
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.6,)" />
+    </Dependencies>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Ollon.VisualStudio.Extensibility.DesignTime" Path="|Ollon.VisualStudio.Extensibility.DesignTime|" />
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Ollon.VisualStudio.Extensibility.DesignTime.Implementation" Path="|Ollon.VisualStudio.Extensibility.DesignTime.Implementation|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Ollon.VisualStudio.Extensibility.DesignTime.Dialogs" Path="|Ollon.VisualStudio.Extensibility.DesignTime.Dialogs|" AssemblyName="|Ollon.VisualStudio.Extensibility.DesignTime.Dialogs;AssemblyName|" />
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="Ollon.VisualStudio.Extensibility.DesignTime.Package" Path="|Ollon.VisualStudio.Extensibility.DesignTime.Package;PkgdefProjectOutputGroup|" />
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Ollon.VisualStudio.Extensibility.DesignTime.Input" Path="|Ollon.VisualStudio.Extensibility.DesignTime.Input|" />
+        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="ProjectTemplates" d:TargetPath="|ProjectTemplates;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+    </Assets>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
+</PackageManifest>

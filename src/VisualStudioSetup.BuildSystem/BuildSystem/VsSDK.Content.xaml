@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--  Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.  -->
+<Rule
+    xmlns="http://schemas.microsoft.com/build/2009/properties"
+    Name="Content"
+    Description="File Properties"
+    DisplayName="File Properties"
+    OverrideMode="Extend"
+    PageTemplate="generic">
+
+    <Rule.DataSource>
+        <DataSource
+            HasConfigurationCondition="False"
+            ItemType="Content"
+            Persistence="ProjectFile"
+            SourceOfDefaultValue="AfterContext" />
+    </Rule.DataSource>
+
+    <Rule.Categories>
+        <Category Name="Advanced" DisplayName="Advanced" />
+        <Category Name="VSIX" DisplayName="VSIX" />
+        <Category Name="Ngen" DisplayName="Ngen" />
+    </Rule.Categories>
+
+    <BoolProperty
+        Name="IncludeInVSIX"
+        Category="VSIX"
+        Default="False"
+        Description="Specifies the source file will be included in the VSIX container."
+        DisplayName="Include in VSIX"
+        Visible="True" />
+
+    <StringProperty
+        Name="VSIXSubPath"
+        Category="VSIX"
+        Default=""
+        Description="Specifies the subpath under the InstallRoot where the file will be installed."
+        DisplayName="VSIX Sub Path"
+        Visible="True" />
+
+    <StringProperty
+        Name="TargetPath"
+        Category="VSIX"
+        Default=""
+        Description="The name of the file to be installed on the user's machine."
+        DisplayName="Target Path"
+        Visible="True" />
+
+    <EnumProperty
+        Name="InstallRoot"
+        Category="VSIX"
+        Description="Specifies which root directory to install the file. By default, the file will be installed to the extension directory."
+        DisplayName="Install Root"
+        Visible="True">
+        <EnumValue
+            Name="Default"
+            DisplayName="Default"
+            IsDefault="True" />
+        <EnumValue Name="MSBuild" DisplayName="MSBuild" />
+        <EnumValue Name="Schemas" DisplayName="Schemas" />
+        <EnumValue Name="PublicAssemblies" DisplayName="Public Assemblies" />
+        <EnumValue Name="Licenses" DisplayName="Licenses" />
+        <EnumValue Name="ReferenceAssemblies" DisplayName="ReferenceAssemblies" />
+    </EnumProperty>
+
+    <BoolProperty
+        Name="Ngen"
+        Default="False"
+        Description="Specifies if the assembly should be installed via ngen when the extension is installed. NOTE: This setting will not affect dependencies referenced by this assembly.  Ngen is a tool that improves the performance of managed applications by installing pre-compiled processor-specific machine code in the native image cache on the local computer."
+        DisplayName="Ngen"
+        Visible="True" />
+
+    <StringProperty
+        Name="NgenApplication"
+        Default=""
+        Description="Specifies the application to pass into ngen via the /ExeConfig switch."
+        DisplayName="Ngen Application"
+        Switch="ExeConfig"
+        Visible="True" />
+
+    <EnumProperty
+        Name="NgenArchitecture"
+        Description="Specifies the target architecture for the native image."
+        DisplayName="Ngen Architecture"
+        Visible="True">
+        <EnumValue Name="NotSpecified" DisplayName="NotSpecified" />
+        <EnumValue Name="X86" DisplayName="X86" />
+        <EnumValue Name="X64" DisplayName="X64" />
+        <EnumValue Name="All" DisplayName="All" />
+
+    </EnumProperty>
+
+    <IntProperty
+        Name="NgenPriority"
+        Default="3"
+        Description="Specifies the ngen priority level."
+        DisplayName="Ngen Priority"
+        Visible="True" />
+
+
+</Rule>

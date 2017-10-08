@@ -1,0 +1,97 @@
+﻿<!--
+***********************************************************************************************
+Ollon.VisualStudio.GlobalProperties.props
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (c) 2017 Ollon, LLC. All rights reserved. 
+***********************************************************************************************
+-->
+<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VSInstall>$([MSBuild]::GetRegistryValue(`HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\VisualStudio\SxS\VS7`, `$(VisualStudioVersion)`))</VSInstall>
+    <VSInstall Condition="!HasTrailingSlash('$(VSInstall)')">$(VSInstall)\</VSInstall>
+  </PropertyGroup>
+
+
+  <Choose>
+    <When Condition="'$(DevEnvDir)' == '*Undefined*' OR '$(DevEnvDir)' == ''">
+      <PropertyGroup>
+        <DevEnvDir>$(VSInstall)Common7\IDE\</DevEnvDir>
+      </PropertyGroup>
+    </When>
+  </Choose>
+  
+
+  <Choose>
+    <When Condition="'$(ProjectSystemType)' == 'CPS' OR '$(ProjectSystemType)' == 'Legacy'">
+
+      <PropertyGroup>
+
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        
+        <Configurations>Debug;Release;Test;Experimental</Configurations>
+        <Platform>AnyCPU</Platform>
+
+        <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
+        <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">$(VisualStudioVersion)</MinimumVisualStudioVersion>
+
+        <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+
+        <MSBuildRootDirectory>$(VSInstall)\MSBuild\</MSBuildRootDirectory>
+        <ProjectSystemDirectory>$(MSBuildRootDirectory)ProjectSystem\</ProjectSystemDirectory>
+        <XamlPropertyRulesDirectory>$(ProjectSystemDirectory)Rules\</XamlPropertyRulesDirectory>
+        <TargetsDirectory>$(ProjectSystemDirectory)Targets\</TargetsDirectory>
+
+        <ImportBeforePropsFile>$(TargetsDirectory)ImportBefore.props</ImportBeforePropsFile>
+        <ImportAfterTargetsFile>$(TargetsDirectory)ImportAfter.targets</ImportAfterTargetsFile>
+
+      </PropertyGroup>
+
+      <PropertyGroup>
+        <AutogenerateBindingRedirects Condition="'$(AutogenerateBindingRedirects)' == ''">true</AutogenerateBindingRedirects>
+        <DisableImplicitFrameworkReferences Condition="'$(DisableImplicitFrameworkReferences)' == ''">true</DisableImplicitFrameworkReferences>
+        <AppendTargetFrameworkToOutputPath Condition="'$(AppendTargetFrameworkToOutputPath)' == ''">false</AppendTargetFrameworkToOutputPath>
+      </PropertyGroup>
+
+      <PropertyGroup>
+        <ImportAdditionalReferences Condition="'$(ImportAdditionalReferences)' == ''">true</ImportAdditionalReferences>
+        <ImportAssemblyInfoDefaultsProps Condition="'$(ImportAssemblyInfoDefaultsProps)' == ''">true</ImportAssemblyInfoDefaultsProps>
+        <ImportNuGetPackagingDefaultsProps Condition="'$(ImportNuGetPackagingDefaultsProps)' == ''">true</ImportNuGetPackagingDefaultsProps>
+      </PropertyGroup>
+
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(ProjectSystemType)' == 'CPS'">
+
+      <PropertyGroup>
+        <IsCPSProject>true</IsCPSProject>
+      </PropertyGroup>
+      
+
+    </When>
+    <When Condition="'$(ProjectSystemType)' == 'Legacy'">
+
+      <PropertyGroup>
+        <IsCPSProject>false</IsCPSProject>
+      </PropertyGroup>
+      
+    </When>
+  </Choose>
+
+
+  <Import Project="$(ImportBeforePropsFile)" />
+  
+  
+  
+
+</Project>

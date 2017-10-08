@@ -1,0 +1,54 @@
+﻿<ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+    <ContentType
+        Name="PageXaml"
+        DisplayName="XAML Page"
+        ItemType="Page">
+        <NameValuePair Name="DependentExtensions" Value=".xaml.cs" />
+        <NameValuePair Name="DefaultMetadata_SubType" Value="Designer" />
+        <NameValuePair Name="DefaultMetadata_Generator" Value="MSBuild:Compile" />
+    </ContentType>
+
+
+    <ContentType
+        Name="AppXaml"
+        DisplayName="XAML Application Definition"
+        ItemType="ApplicationDefinition">
+        <NameValuePair Name="DependentExtensions" Value="xaml.cs" />
+        <NameValuePair Name="DefaultMetadata_SubType" Value="Designer" />
+        <NameValuePair Name="DefaultMetadata_Generator" Value="MSBuild:Compile" />
+    </ContentType>
+
+
+
+    <!--<ContentType
+        Name="DesignData"
+        DisplayName="XAML Design Data"
+        ItemType="DesignData">
+        <NameValuePair Name="DependentExtensions" Value="xaml.cs" />
+        <NameValuePair Name="DefaultMetadata_SubType" Value="Designer" />
+        <NameValuePair Name="DefaultMetadata_Generator" Value="MSBuild:Compile" />
+    </ContentType>
+
+    <ContentType
+        Name="DesignDataWithDesignTimeCreatableTypes"
+        DisplayName="XAML Design Data With Design Time Creatable Types"
+        ItemType="DesignData">
+        <NameValuePair Name="DependentExtensions" Value="xaml.cs" />
+        <NameValuePair Name="DefaultMetadata_SubType" Value="Designer" />
+        <NameValuePair Name="DefaultMetadata_Generator" Value="MSBuild:Compile" />
+    </ContentType>-->
+
+    <ItemType Name="Page" DisplayName="XAML Page" />
+
+    <ItemType Name="ApplicationDefinition" DisplayName="XAML Application Definition" />
+
+    <!--<ItemType
+        Name="DesignData"
+        DisplayName="XAML Design Data"/>
+
+    <ItemType
+        Name="DesignDataWithDesignTimeCreatableTypes"
+        DisplayName="XAML Design Data With Design Time Creatable Types" />-->
+
+</ProjectSchemaDefinitions>
